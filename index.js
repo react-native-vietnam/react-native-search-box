@@ -192,6 +192,7 @@ class Search extends Component {
                     onSubmitEditing={this.onSearch}
                     autoCorrect={false}
                     returnKeyType="search"
+                    underlineColorAndroid='transparent'
                 />
                 <Animated.Image
                     source={require('./img/search.png')}
