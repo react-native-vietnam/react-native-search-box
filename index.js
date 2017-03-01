@@ -279,4 +279,4 @@ const styles = {
     }
 };
 
-export { Search };
+export default Search;
