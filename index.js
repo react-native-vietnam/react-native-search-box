@@ -19,11 +19,19 @@ class Search extends Component {
     static propTypes = {
         placeholder: PropTypes.string,
         cancelTitle: PropTypes.string,
+        beforeFocus: PropTypes.func,
         onFocus: PropTypes.func,
+        afterFocus: PropTypes.func,
+        onBeforeSearch: PropTypes.func,
         onSearch: PropTypes.func,
+        onAfterSearch: PropTypes.func,
         onChangeText: PropTypes.func,
+        onBeforeCancel: PropTypes.func,
         onCancel: PropTypes.func,
+        onAfterCancel: PropTypes.func,
+        onBeforeDelete: PropTypes.func,
         onDelete: PropTypes.func,
+        onAfterDelete: PropTypes.func,
         containerStyle: PropTypes.string,
         inputStyle: PropTypes.string,
         btnCancelStyle: PropTypes.string,
@@ -53,6 +61,9 @@ class Search extends Component {
         this.onChangeText = this.onChangeText.bind(this);
         this.onCancel = this.onCancel.bind(this);
         this.onDelete = this.onDelete.bind(this);
+        this.focus = this.focus.bind(this);
+        this.expandAnimation = this.expandAnimation.bind(this);
+        this.collapseAnimation = this.collapseAnimation.bind(this);
 
         /**
          * local variables
@@ -66,19 +77,49 @@ class Search extends Component {
         this.props.onSearch && this.props.onSearch(this.state.keyword);
     }
 
-    onChangeText = (text) => {
-        this.setState({ keyword: text });
-        Animated.timing(
+    async onChangeText(text) {
+        await this.setStateAsync({ keyword: text});
+        await Animated.timing(
             this.iconDeleteAnimated,
             {
                 toValue: (text.length > 0) ? 1 : 0,
                 duration: 200
             }
         ).start();
-        this.props.onChangeText && this.props.onChangeText(text);
+        await this.props.onChangeText && this.props.onChangeText(this.state.keyword);
     }
 
-    onFocus = () => {
+    async onFocus() {
+        await this.expandAnimation();
+    }
+
+    onDelete = () => {
+        Animated.timing(
+            this.iconDeleteAnimated,
+            {
+                toValue: 0,
+                duration: 200
+            }
+        ).start();
+        this.setState({ keyword: '' });
+        this.props.onDelete && this.props.onDelete();
+    }
+
+    onCancel = () => {
+        this.setState({ keyword: '' });
+        this.collapseAnimation();
+        this.props.onCancel && this.props.onCancel();
+    }
+
+    focus = async (text) => {
+        this.props.beforeFocus && await this.props.beforeFocus();
+        await this.setState({ keyword: text });
+        await this.refs.input_keyword._component.focus();
+        await this.expandAnimation();
+        this.props.afterFocus && await this.props.afterFocus();
+    }
+
+    expandAnimation = () => {
         Animated.parallel([
             Animated.timing(
                 this.inputFocusWidthAnimated,
@@ -109,23 +150,9 @@ class Search extends Component {
                 }
             ).start(),
         ]);
-        this.props.onFocus && this.props.onFocus(this.state.keyword);
     }
 
-    onDelete = () => {
-        Animated.timing(
-            this.iconDeleteAnimated,
-            {
-                toValue: 0,
-                duration: 200
-            }
-        ).start();
-        this.setState({ keyword: '' });
-        this.props.onDelete && this.props.onDelete();
-    }
-
-    onCancel = () => {
-        this.setState({ keyword: '' });
+    collapseAnimation = () => {
         Keyboard.dismiss();
         Animated.parallel([
             Animated.timing(
@@ -164,7 +191,6 @@ class Search extends Component {
                 }
             ).start(),
         ]);
-        this.props.onCancel && this.props.onCancel();
     }
 
     render() {
@@ -177,6 +203,7 @@ class Search extends Component {
                 ]}
             >
                 <AnimatedTextInput
+                    ref="input_keyword"
                     style={[
                         styles.input,
                         this.props.inputStyle,
@@ -188,10 +215,11 @@ class Search extends Component {
                     value={this.state.keyword}
                     onChangeText={this.onChangeText}
                     placeholder={this.placeholder}
-                    onFocus={this.onFocus}
+                    onFocus={() => this.onFocus()}
                     onSubmitEditing={this.onSearch}
                     autoCorrect={false}
                     returnKeyType="search"
+                    underlineColorAndroid="transparent"
                 />
                 <Animated.Image
                     source={require('./img/search.png')}
@@ -248,7 +276,7 @@ const styles = {
         backgroundColor: '#f7f7f7',
         borderRadius: 5,
         color: 'grey',
-        fontSize: 13
+        fontSize: 13,
     },
     iconSearch: {
         flex: 1,
