@@ -84,6 +84,7 @@ class Search extends Component {
      */
     onFocus = async () => {
         this.props.beforeFocus && await this.props.beforeFocus();
+        this.refs.input_keyword._component.isFocused && await this.refs.input_keyword._component.focus();
         await this.expandAnimation();
         this.props.onFocus && await this.props.onFocus(this.state.keyword);
         this.props.afterFocus && await this.props.afterFocus();
@@ -93,8 +94,8 @@ class Search extends Component {
      * focus
      * async await
      */
-    focus = async (text) => {
-        await this.setState({ keyword: text || '' });
+    focus = async (text = '') => {
+        await this.setState({ keyword: text });
         await this.refs.input_keyword._component.focus();
     }
 
@@ -243,12 +244,13 @@ class Search extends Component {
                     placeholderTextColor={this.props.placeholderTextColor || styles.placeholderColor}
                     onSubmitEditing={this.onSearch}
                     autoCorrect={false}
+                    blurOnSubmit={false}
                     returnKeyType={this.props.returnKeyType || 'search'}
                     keyboardType={this.props.keyboardType || 'default'}
                     onFocus={this.onFocus}
                     underlineColorAndroid="transparent"
                 />
-                <TouchableWithoutFeedback onPress={this.focus}>
+                <TouchableWithoutFeedback onPress={this.onFocus}>
                     <Animated.Image
                         source={require('./img/search.png')}
                         style={[
