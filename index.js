@@ -9,40 +9,17 @@ import {
     Image
 } from 'react-native';
 
-const { width: contentWidth } = Dimensions.get('window');
-const containerHeight = 40;
-const middleHeight = 20;
-const middleWidth = contentWidth / 2;
+const { width } = Dimensions.get('window');
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
+const containerHeight = 40;
+const contentWidth = width;
+const middleHeight = 20;
+const middleWidth = width / 2;
 
 class Search extends Component {
-    static propTypes = {
-        placeholder: PropTypes.string,
-        cancelTitle: PropTypes.string,
-        beforeFocus: PropTypes.func,
-        onFocus: PropTypes.func,
-        afterFocus: PropTypes.func,
-        onBeforeSearch: PropTypes.func,
-        onSearch: PropTypes.func,
-        onAfterSearch: PropTypes.func,
-        onChangeText: PropTypes.func,
-        onBeforeCancel: PropTypes.func,
-        onCancel: PropTypes.func,
-        onAfterCancel: PropTypes.func,
-        onBeforeDelete: PropTypes.func,
-        onDelete: PropTypes.func,
-        onAfterDelete: PropTypes.func,
-        containerStyle: PropTypes.string,
-        inputStyle: PropTypes.string,
-        btnCancelStyle: PropTypes.string,
-        btnCancelColor: PropTypes.string,
-    }
-
     constructor(props) {
         super(props);
-        this.state = {
-            keyword: ''
-        };
+        this.state = { keyword: '' };
 
         /**
          * Animated values
@@ -72,141 +49,189 @@ class Search extends Component {
         this.cancelTitle = this.props.cancelTitle || 'Cancel';
     }
 
-    onSearch = () => {
-        Keyboard.dismiss();
-        this.props.onSearch && this.props.onSearch(this.state.keyword);
+    /**
+     * onSearch
+     * async await
+     */
+    onSearch = async () => {
+        this.props.beforeSearch && await this.props.beforeSearch(this.state.keyword);
+        await Keyboard.dismiss();
+        this.props.onSearch && await this.props.onSearch(this.state.keyword);
+        this.props.afterSearch && await this.props.afterSearch(this.state.keyword);
     }
 
-    async onChangeText(text) {
-        await this.setStateAsync({ keyword: text});
-        await Animated.timing(
-            this.iconDeleteAnimated,
-            {
-                toValue: (text.length > 0) ? 1 : 0,
-                duration: 200
-            }
-        ).start();
-        await this.props.onChangeText && this.props.onChangeText(this.state.keyword);
-    }
-
-    async onFocus() {
-        await this.expandAnimation();
-    }
-
-    onDelete = () => {
-        Animated.timing(
-            this.iconDeleteAnimated,
-            {
-                toValue: 0,
-                duration: 200
-            }
-        ).start();
-        this.setState({ keyword: '' });
-        this.props.onDelete && this.props.onDelete();
-    }
-
-    onCancel = () => {
-        this.setState({ keyword: '' });
-        this.collapseAnimation();
-        this.props.onCancel && this.props.onCancel();
-    }
-
-    focus = async (text) => {
-        this.props.beforeFocus && await this.props.beforeFocus();
+    /**
+     * onChangeText
+     * async await
+     */
+    onChangeText = async (text) => {
         await this.setState({ keyword: text });
-        await this.refs.input_keyword._component.focus();
+        await new Promise((resolve, reject) => {
+            Animated.timing(
+                this.iconDeleteAnimated,
+                {
+                    toValue: (text.length > 0) ? 1 : 0,
+                    duration: 200
+                }
+            ).start(() => resolve());
+        });
+        this.props.onChangeText && await this.props.onChangeText(this.state.keyword);
+    }
+
+    /**
+     * onFocus
+     * async await
+     */
+    onFocus = async () => {
+        this.props.beforeFocus && await this.props.beforeFocus();
         await this.expandAnimation();
+        this.props.onFocus && await this.props.onFocus(this.state.keyword);
         this.props.afterFocus && await this.props.afterFocus();
     }
 
-    expandAnimation = () => {
-        Animated.parallel([
-            Animated.timing(
-                this.inputFocusWidthAnimated,
-                {
-                    toValue: contentWidth - 70,
-                    duration: 200
-                }
-            ).start(),
-            Animated.timing(
-                this.btnCancelAnimated,
-                {
-                    toValue: 10,
-                    duration: 200
-                }
-            ).start(),
-            Animated.timing(
-                this.inputFocusPlaceholderAnimated,
-                {
-                    toValue: 20,
-                    duration: 200
-                }
-            ).start(),
-            Animated.timing(
-                this.iconSearchAnimated,
-                {
-                    toValue: 10,
-                    duration: 200
-                }
-            ).start(),
-        ]);
+    /**
+     * focus
+     * async await
+     */
+    focus = async (text) => {
+        await this.setState({ keyword: text || '' });
+        await this.refs.input_keyword._component.focus();
     }
 
-    collapseAnimation = () => {
-        Keyboard.dismiss();
-        Animated.parallel([
-            Animated.timing(
-                this.inputFocusWidthAnimated,
-                {
-                    toValue: contentWidth - 10,
-                    duration: 200
-                }
-            ).start(),
-            Animated.timing(
-                this.btnCancelAnimated,
-                {
-                    toValue: contentWidth,
-                    duration: 200
-                }
-            ).start(),
-            Animated.timing(
-                this.inputFocusPlaceholderAnimated,
-                {
-                    toValue: middleWidth - 15,
-                    duration: 200
-                }
-            ).start(),
-            Animated.timing(
-                this.iconSearchAnimated,
-                {
-                    toValue: middleWidth - 25,
-                    duration: 200
-                }
-            ).start(),
+    /**
+     * onDelete
+     * async await
+     */
+    onDelete = async () => {
+        this.props.beforeDelete && await this.props.beforeDelete();
+        await new Promise((resolve, reject) => {
             Animated.timing(
                 this.iconDeleteAnimated,
                 {
                     toValue: 0,
                     duration: 200
                 }
-            ).start(),
-        ]);
+            ).start(() => resolve());
+        });
+        await this.setState({ keyword: '' });
+        this.props.onDelete && await this.props.onDelete();
+        this.props.afterDelete && await this.props.afterDelete();
+    }
+
+    /**
+     * onCancel
+     * async await
+     */
+    onCancel = async () => {
+        this.props.beforeCancel && await this.props.beforeCancel();
+        await this.setState({ keyword: '' });
+        await this.collapseAnimation();
+        this.props.onCancel && await this.props.onCancel();
+        this.props.afterCancel && await this.props.afterCancel();
+    }
+
+    expandAnimation = () => {
+        return new Promise((resolve, reject) => {
+            Animated.parallel([
+                Animated.timing(
+                    this.inputFocusWidthAnimated,
+                    {
+                        toValue: contentWidth - 70,
+                        duration: 200
+                    }
+                ).start(),
+                Animated.timing(
+                    this.btnCancelAnimated,
+                    {
+                        toValue: 10,
+                        duration: 200
+                    }
+                ).start(),
+                Animated.timing(
+                    this.inputFocusPlaceholderAnimated,
+                    {
+                        toValue: 20,
+                        duration: 200
+                    }
+                ).start(),
+                Animated.timing(
+                    this.iconSearchAnimated,
+                    {
+                        toValue: 10,
+                        duration: 200
+                    }
+                ).start(),
+                Animated.timing(
+                    this.iconDeleteAnimated,
+                    {
+                        toValue: (this.state.keyword.length > 0) ? 1 : 0,
+                        duration: 200
+                    }
+                ).start()
+            ]);
+            resolve();
+        });
+    }
+
+    collapseAnimation = () => {
+        return new Promise((resolve, reject) => {
+            Animated.parallel([
+                Keyboard.dismiss(),
+                Animated.timing(
+                    this.inputFocusWidthAnimated,
+                    {
+                        toValue: contentWidth - 10,
+                        duration: 200
+                    }
+                ).start(),
+                Animated.timing(
+                    this.btnCancelAnimated,
+                    {
+                        toValue: contentWidth,
+                        duration: 200
+                    }
+                ).start(),
+                Animated.timing(
+                    this.inputFocusPlaceholderAnimated,
+                    {
+                        toValue: middleWidth - 15,
+                        duration: 200
+                    }
+                ).start(),
+                Animated.timing(
+                    this.iconSearchAnimated,
+                    {
+                        toValue: middleWidth - 25,
+                        duration: 200
+                    }
+                ).start(),
+                Animated.timing(
+                    this.iconDeleteAnimated,
+                    {
+                        toValue: 0,
+                        duration: 200
+                    }
+                ).start(),
+            ]);
+            resolve();
+        });
     }
 
     render() {
         return (
             <Animated.View
                 ref="searchContainer"
-                style={[
-                    styles.container,
-                    this.props.containerStyle
-                ]}
+                style={
+                    [
+                        styles.container,
+                        this.props.backgroundColor && { backgroundColor: this.props.backgroundColor }
+                    ]}
             >
                 <AnimatedTextInput
                     ref="input_keyword"
                     style={[
                         styles.input,
-                        this.props.inputStyle,
+                        this.props.placeholderTextColor && { color: this.props.placeholderTextColor },
                         {
                             width: this.inputFocusWidthAnimated,
                             paddingLeft: this.inputFocusPlaceholderAnimated
@@ -215,26 +240,32 @@ class Search extends Component {
                     value={this.state.keyword}
                     onChangeText={this.onChangeText}
                     placeholder={this.placeholder}
-                    onFocus={() => this.onFocus()}
+                    placeholderTextColor={this.props.placeholderTextColor || styles.placeholderColor}
                     onSubmitEditing={this.onSearch}
                     autoCorrect={false}
-                    returnKeyType="search"
+                    returnKeyType={this.props.returnKeyType || 'search'}
+                    keyboardType={this.props.keyboardType || 'default'}
+                    onFocus={this.onFocus}
                     underlineColorAndroid="transparent"
                 />
-                <Animated.Image
-                    source={require('./img/search.png')}
-                    style={[
-                        styles.iconSearch,
-                        {
-                            left: this.iconSearchAnimated,
-                        }
-                    ]}
-                />
+                <TouchableWithoutFeedback onPress={this.focus}>
+                    <Animated.Image
+                        source={require('./img/search.png')}
+                        style={[
+                            styles.iconSearch,
+                            this.props.tintColorSearch && { tintColor: this.props.tintColorSearch },
+                            {
+                                left: this.iconSearchAnimated,
+                            }
+                        ]}
+                    />
+                </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={this.onDelete}>
                     <Animated.Image
                         source={require('./img/delete.png')}
                         style={[
                             styles.iconDelete,
+                            this.props.tintColorDelete && { tintColor: this.props.tintColorDelete },
                             { opacity: this.iconDeleteAnimated }
                         ]}
                     />
@@ -243,11 +274,10 @@ class Search extends Component {
                     <Animated.View
                         style={[
                             styles.cancelButton,
-                            this.props.btnCancelStyle,
                             { left: this.btnCancelAnimated }
                         ]}
                     >
-                        <Text style={[styles.cancelButtonText, this.props.btnCancelColor]}>
+                        <Text style={[styles.cancelButtonText, this.props.titleCancelColor && { color: this.props.titleCancelColor }]}>
                             {this.cancelTitle}
                         </Text>
                     </Animated.View>
@@ -275,9 +305,9 @@ const styles = {
         borderColor: '#000',
         backgroundColor: '#f7f7f7',
         borderRadius: 5,
-        color: 'grey',
         fontSize: 13,
     },
+    placeholderColor: 'grey',
     iconSearch: {
         flex: 1,
         position: 'absolute',
@@ -305,6 +335,67 @@ const styles = {
         fontSize: 14,
         color: '#fff'
     }
+};
+/**
+ * Props
+ */
+Search.propTypes = {
+    /**
+     * onFocus
+     * return a Promise
+     * beforeFocus, onFocus, afterFocus
+     */
+    beforeFocus: PropTypes.func,
+    onFocus: PropTypes.func,
+    afterFocus: PropTypes.func,
+
+    /**
+     * onSearch
+     * return a Promise
+     */
+    beforeSearch: PropTypes.func,
+    onSearch: PropTypes.func,
+    afterSearch: PropTypes.func,
+
+    /**
+     * onChangeText
+     * return a Promise
+     */
+    onChangeText: PropTypes.func,
+
+    /**
+     * onCancel
+     * return a Promise
+     */
+    beforeCancel: PropTypes.func,
+    onCancel: PropTypes.func,
+    afterCancel: PropTypes.func,
+
+    /**
+     * async await
+     * return a Promise
+     * beforeDelete, onDelete, afterDelete
+     */
+    beforeDelete: PropTypes.func,
+    onDelete: PropTypes.func,
+    afterDelete: PropTypes.func,
+
+    /**
+     * styles
+     */
+    backgroundColor: PropTypes.string,
+    placeholderTextColor: PropTypes.string,
+    titleCancelColor: PropTypes.string,
+    tintColorSearch: PropTypes.string,
+    tintColorDelete: PropTypes.string,
+
+    /**
+     * text input
+     */
+    placeholder: PropTypes.string,
+    cancelTitle: PropTypes.string,
+    returnKeyType: PropTypes.string,
+    keyboardType: PropTypes.string,
 };
 
 export default Search;

@@ -1,6 +1,6 @@
 ## React Native Search Box
 - A simple search box with animation, inspired from ios search bar. 
-- No library dependencies, lightweight, fast, flexible. 
+- No library dependencies, lightweight, fast, flexible, customizable. 
 - Support both iOS/Android devices
 
 
@@ -18,6 +18,10 @@ yarn add react-native-search-box
 | Platform | Android | iOS |
 |:--------:|:-------:|:---:|
 | Demo gif link | ![Android](https://media.giphy.com/media/3o7bu4qW4xq15geiv6/source.gif) | ![iOS](https://media.giphy.com/media/26gR16ivWIyDlVP8s/source.gif) |
+
+## Example code
+
+[Example](https://github.com/crabstudio/react-native-atoz-listview/blob/master/example/src/screens/Contacts/Home.js#L162)
 
 ## Usage
 
@@ -56,38 +60,41 @@ class MyScene extends Component {
     }
   }
 
-  // Define your own renderRow => this one for AtoZListView, not related to Search Bar
-  renderRow = (item, sectionId, index) => {
-    return (
-      <TouchableHightLight 
-        style={{ 
-          height: rowHeight, 
-          justifyContent: 'center', 
-          alignItems: 'center'}}
-      >
-        <Text>{item.name}</Text>
-      </TouchableHightLight>
-    );
+    renderRow = (item, sectionId, index) => {
+      return (
+        <TouchableHightLight 
+          style={{ 
+            height: rowHeight, 
+            justifyContent: 'center', 
+            alignItems: 'center'}}
+        >
+          <Text>{item.name}</Text>
+        </TouchableHightLight>
+      );
     }
 
+    // Important: You must return a Promise
+    beforeFocus = () => {
+        return new Promise((resolve, reject) => {
+            console.log('beforeFocus');
+            resolve();
+        });
+    }
+
+    // Important: You must return a Promise
     onFocus = (text) => {
-        console.log('onFocus', text);
+        return new Promise((resolve, reject) => {
+            console.log('beforeFocus', text);
+            resolve();
+        });
     }
-    
-    onSearch = (text) => {
-        console.log('onSearch', text);
-    }
-    
-    onChangeText = (text) => {
-        console.log('onChangeText', text);
-    }
-    
-    onCancel = () => {
-        console.log('onCancel', this.refs.search_box);
-    }
-    
-    onDelete = () => {
-        console.log('onDelete', this.refs.search_box);
+
+    // Important: You must return a Promise
+    afterFocus = () => {
+        return new Promise((resolve, reject) => {
+            console.log('afterFocus');
+            resolve();
+        });
     }
     
   render() {
@@ -95,21 +102,11 @@ class MyScene extends Component {
     return (
       <View style={{ flex: 1}}>
         <Search
-        ref="search_box"
-        /**
-        * Props list:
-        * placeholder: PropTypes.string,
-        * cancelTitle: PropTypes.string,
-        * onFocus: PropTypes.func,
-        * onSearch: PropTypes.func,
-        * onChangeText: PropTypes.func,
-        * onCancel: PropTypes.func,
-        * onDelete: PropTypes.func,
-        * containerStyle: PropTypes.string,
-        * inputStyle: PropTypes.string,
-        * btnCancelStyle: PropTypes.string,
-        * btnCancelColor: PropTypes.string,
-        */
+          ref="search_box"
+          /**
+          * There many props that can customizable
+          * Please scroll down to Props section
+          */
         />
 
         <AtoZListView
@@ -122,4 +119,65 @@ class MyScene extends Component {
     );
   }
 }
+```
+
+## Props
+
+```
+    /**
+     * onFocus
+     * return a Promise
+     * beforeFocus, onFocus, afterFocus
+     */
+    beforeFocus: PropTypes.func,
+    onFocus: PropTypes.func,
+    afterFocus: PropTypes.func,
+
+    /**
+     * onSearch
+     * return a Promise
+     */
+    beforeSearch: PropTypes.func,
+    onSearch: PropTypes.func,
+    afterSearch: PropTypes.func,
+
+    /**
+     * onChangeText
+     * return a Promise
+     */
+    onChangeText: PropTypes.func,
+
+    /**
+     * onCancel
+     * return a Promise
+     */
+    beforeCancel: PropTypes.func,
+    onCancel: PropTypes.func,
+    afterCancel: PropTypes.func,
+
+    /**
+     * async await
+     * return a Promise
+     * beforeDelete, onDelete, afterDelete
+     */
+    beforeDelete: PropTypes.func,
+    onDelete: PropTypes.func,
+    afterDelete: PropTypes.func,
+
+    /**
+     * styles
+     */
+    backgroundColor: PropTypes.string,
+    placeholderTextColor: PropTypes.string,
+    titleCancelColor: PropTypes.string,
+    tintColorSearch: PropTypes.string,
+    tintColorDelete: PropTypes.string,
+
+    /**
+     * text input
+     */
+    placeholder: PropTypes.string,
+    cancelTitle: PropTypes.string,
+    returnKeyType: PropTypes.string,
+    keyboardType: PropTypes.string,
 ```
