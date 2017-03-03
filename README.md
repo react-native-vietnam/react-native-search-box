@@ -20,7 +20,7 @@ yarn add react-native-search-box
 
 | Platform | Android | iOS |
 |:--------:|:-------:|:---:|
-| Demo gif link | ![Android](https://media.giphy.com/media/3o7bu4qW4xq15geiv6/source.gif) | ![iOS](https://media.giphy.com/media/26gR16ivWIyDlVP8s/source.gif) |
+| Demo gif link | ![Android](https://media.giphy.com/media/3oKIPja49woFsDBuPC/giphy.gif) | ![iOS](https://media.giphy.com/media/3oKIPvb7oymPsobWI8/giphy.gif) |
 
 ## Example code
 
