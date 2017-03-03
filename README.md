@@ -3,6 +3,9 @@
 - No library dependencies, lightweight, fast, flexible, customizable. 
 - Support both iOS/Android devices
 
+## Donate
+
+[I'm feeling satisfied](http://unghotoi.com/anhtuank7c)
 
 ## Install
 ```
