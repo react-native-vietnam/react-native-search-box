@@ -12,9 +12,7 @@ import {
 const { width } = Dimensions.get('window');
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 const containerHeight = 40;
-const contentWidth = width;
 const middleHeight = 20;
-const middleWidth = width / 2;
 
 class Search extends Component {
     constructor(props) {
@@ -24,11 +22,11 @@ class Search extends Component {
         /**
          * Animated values
          */
-        this.iconSearchAnimated = new Animated.Value(middleWidth - 25);
+        this.iconSearchAnimated = new Animated.Value(this.props.middleWidth - 25);
         this.iconDeleteAnimated = new Animated.Value(0);
-        this.inputFocusWidthAnimated = new Animated.Value(contentWidth - 10);
-        this.inputFocusPlaceholderAnimated = new Animated.Value(middleWidth - 15);
-        this.btnCancelAnimated = new Animated.Value(contentWidth);
+        this.inputFocusWidthAnimated = new Animated.Value(this.props.contentWidth - 10);
+        this.inputFocusPlaceholderAnimated = new Animated.Value(this.props.middleWidth - 15);
+        this.btnCancelAnimated = new Animated.Value(this.props.contentWidth);
 
         /**
          * functions
@@ -137,7 +135,7 @@ class Search extends Component {
                 Animated.timing(
                     this.inputFocusWidthAnimated,
                     {
-                        toValue: contentWidth - 70,
+                        toValue: this.props.contentWidth - 70,
                         duration: 200
                     }
                 ).start(),
@@ -181,28 +179,28 @@ class Search extends Component {
                 Animated.timing(
                     this.inputFocusWidthAnimated,
                     {
-                        toValue: contentWidth - 10,
+                        toValue: this.props.contentWidth - 10,
                         duration: 200
                     }
                 ).start(),
                 Animated.timing(
                     this.btnCancelAnimated,
                     {
-                        toValue: contentWidth,
+                        toValue: this.props.contentWidth,
                         duration: 200
                     }
                 ).start(),
                 Animated.timing(
                     this.inputFocusPlaceholderAnimated,
                     {
-                        toValue: middleWidth - 15,
+                        toValue: this.props.middleWidth - 15,
                         duration: 200
                     }
                 ).start(),
                 Animated.timing(
                     this.iconSearchAnimated,
                     {
-                        toValue: middleWidth - 25,
+                        toValue: this.props.middleWidth - 25,
                         duration: 200
                     }
                 ).start(),
@@ -233,6 +231,8 @@ class Search extends Component {
                     style={[
                         styles.input,
                         this.props.placeholderTextColor && { color: this.props.placeholderTextColor },
+                        this.props.inputHeight && { height: this.props.inputHeight },
+                        this.props.inputBorderRadius && { borderRadius: this.props.inputBorderRadius },
                         {
                             width: this.inputFocusWidthAnimated,
                             paddingLeft: this.inputFocusPlaceholderAnimated
@@ -398,6 +398,15 @@ Search.propTypes = {
     cancelTitle: PropTypes.string,
     returnKeyType: PropTypes.string,
     keyboardType: PropTypes.string,
+    inputHeight: PropTypes.number,
+    inputBorderRadius: PropTypes.number,
+    contentWidth: PropTypes.number,
+    middleWidth: PropTypes.number,
+};
+
+Search.defaultProps = {
+    contentWidth: width,
+    middleWidth: width / 2,
 };
 
 export default Search;
