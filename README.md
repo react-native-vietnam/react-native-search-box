@@ -183,6 +183,16 @@ class MyScene extends Component {
     cancelTitle: PropTypes.string,
     returnKeyType: PropTypes.string,
     keyboardType: PropTypes.string,
+    inputHeight: PropTypes.number,
+    inputBorderRadius: PropTypes.number,
+    contentWidth: PropTypes.number,
+    middleWidth: PropTypes.number,
+```
+
+## Prop Defaults
+```
+    contentWidth: Dimensions.get('window').width,
+    middleWidth: Dimensions.get('window').width / 2,
 ```
 
 ## LICENSE
