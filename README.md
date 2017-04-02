@@ -187,12 +187,25 @@ class MyScene extends Component {
     inputBorderRadius: PropTypes.number,
     contentWidth: PropTypes.number,
     middleWidth: PropTypes.number,
+
+    /**
+     * Positioning
+     */
+    positionRightDelete: PropTypes.number,
+    searchIconCollapsedMargin: PropTypes.number,
+    searchIconExpandedMargin: PropTypes.number,
+    placeholderCollapsedMargin: PropTypes.number,
+    placeholderExpandedMargin: PropTypes.number,
 ```
 
 ## Prop Defaults
 ```
     contentWidth: Dimensions.get('window').width,
     middleWidth: Dimensions.get('window').width / 2,
+    searchIconCollapsedMargin: 25,
+    searchIconExpandedMargin: 10,
+    placeholderCollapsedMargin: 15,
+    placeholderExpandedMargin: 20,
 ```
 
 ## LICENSE
