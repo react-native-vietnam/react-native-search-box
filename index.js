@@ -46,6 +46,12 @@ class Search extends Component {
          */
         this.placeholder = this.props.placeholder || 'Search';
         this.cancelTitle = this.props.cancelTitle || 'Cancel';
+
+        /**
+         * Shadow
+         */
+        this.shadowOpacityAnimated = new Animated.Value(this.props.shadowOpacityCollapsed);
+        this.shadowHeight = this.props.shadowOffsetHeightCollapsed;
     }
 
     /**
@@ -167,8 +173,16 @@ class Search extends Component {
                         toValue: (this.state.keyword.length > 0) ? 1 : 0,
                         duration: 200
                     }
-                ).start()
+                ).start(),
+                Animated.timing(
+                    this.shadowOpacityAnimated,
+                    {
+                        toValue: this.props.shadowOpacityExpanded,
+                        duration: 200
+                    }
+                ).start(),
             ]);
+            this.shadowHeight = this.props.shadowOffsetHeightExpanded;
             resolve();
         });
     }
@@ -212,7 +226,15 @@ class Search extends Component {
                         duration: 200
                     }
                 ).start(),
+                Animated.timing(
+                    this.shadowOpacityAnimated,
+                    {
+                        toValue: this.props.shadowOpacityCollapsed,
+                        duration: 200
+                    }
+                ).start(),
             ]);
+            this.shadowHeight = this.props.shadowOffsetHeightCollapsed;
             resolve();
         });
     }
@@ -237,6 +259,12 @@ class Search extends Component {
                         {
                             width: this.inputFocusWidthAnimated,
                             paddingLeft: this.inputFocusPlaceholderAnimated
+                        },
+                        {
+                            shadowOffset: { width: this.props.shadowOffsetWidth, height: this.shadowHeight },
+                            shadowColor: this.props.shadowColor,
+                            shadowOpacity: this.shadowOpacityAnimated,
+                            shadowRadius: this.props.shadowRadius,
                         }
                     ]}
                     value={this.state.keyword}
@@ -299,7 +327,6 @@ const styles = {
         justifyContent: 'flex-start',
         alignItems: 'center',
         padding: 5,
-        overflow: 'hidden'
     },
     input: {
         height: containerHeight - 10,
@@ -413,6 +440,17 @@ Search.propTypes = {
     searchIconExpandedMargin: PropTypes.number,
     placeholderCollapsedMargin: PropTypes.number,
     placeholderExpandedMargin: PropTypes.number,
+
+    /**
+     * Shadow
+     */
+    shadowOffsetHeightCollapsed: PropTypes.number,
+    shadowOffsetHeightExpanded: PropTypes.number,
+    shadowOffsetWidth: PropTypes.number,
+    shadowColor: PropTypes.string,
+    shadowOpacityCollapsed: PropTypes.number,
+    shadowOpacityExpanded: PropTypes.number,
+    shadowRadius: PropTypes.number,
 };
 
 Search.defaultProps = {
@@ -422,6 +460,13 @@ Search.defaultProps = {
     searchIconExpandedMargin: 10,
     placeholderCollapsedMargin: 15,
     placeholderExpandedMargin: 20,
+    shadowOffsetWidth: 0,
+    shadowOffsetHeightCollapsed: 2,
+    shadowOffsetHeightExpanded: 4,
+    shadowColor: '#000',
+    shadowOpacityCollapsed: 0.12,
+    shadowOpacityExpanded: 0.24,
+    shadowRadius: 4,
 };
 
 export default Search;
