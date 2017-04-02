@@ -3,10 +3,6 @@
 - No library dependencies, lightweight, fast, flexible, customizable. 
 - Support both iOS/Android devices
 
-## Donate
-
-[I'm feeling satisfied](http://unghotoi.com/anhtuank7c)
-
 ## Install
 ```
 npm install --save react-native-search-box
@@ -20,7 +16,7 @@ yarn add react-native-search-box
 
 | Platform | Android | iOS |
 |:--------:|:-------:|:---:|
-| Demo gif link | ![Android](https://media.giphy.com/media/3oKIPja49woFsDBuPC/giphy.gif) | ![iOS](https://media.giphy.com/media/3oKIPvb7oymPsobWI8/giphy.gif) |
+| Demo | ![Android](https://media.giphy.com/media/3oKIPja49woFsDBuPC/giphy.gif) | ![iOS](https://media.giphy.com/media/3oKIPvb7oymPsobWI8/giphy.gif) |
 
 ## Example code
 
