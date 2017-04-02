@@ -268,6 +268,7 @@ class Search extends Component {
                         style={[
                             styles.iconDelete,
                             this.props.tintColorDelete && { tintColor: this.props.tintColorDelete },
+                            this.props.positionRightDelete && { right: this.props.positionRightDelete },
                             { opacity: this.iconDeleteAnimated }
                         ]}
                     />
@@ -402,6 +403,11 @@ Search.propTypes = {
     inputBorderRadius: PropTypes.number,
     contentWidth: PropTypes.number,
     middleWidth: PropTypes.number,
+
+    /**
+     * Positioning
+     */
+    positionRightDelete: PropTypes.number,
 };
 
 Search.defaultProps = {
