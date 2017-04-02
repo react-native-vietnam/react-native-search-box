@@ -6,7 +6,8 @@ import {
     Animated,
     Dimensions,
     Keyboard,
-    Image
+    Image,
+    View
 } from 'react-native';
 
 const { width } = Dimensions.get('window');
@@ -22,10 +23,10 @@ class Search extends Component {
         /**
          * Animated values
          */
-        this.iconSearchAnimated = new Animated.Value(this.props.middleWidth - 25);
+        this.iconSearchAnimated = new Animated.Value(this.props.middleWidth - this.props.searchIconCollapsedMargin);
         this.iconDeleteAnimated = new Animated.Value(0);
         this.inputFocusWidthAnimated = new Animated.Value(this.props.contentWidth - 10);
-        this.inputFocusPlaceholderAnimated = new Animated.Value(this.props.middleWidth - 15);
+        this.inputFocusPlaceholderAnimated = new Animated.Value(this.props.middleWidth - this.props.placeholderCollapsedMargin);
         this.btnCancelAnimated = new Animated.Value(this.props.contentWidth);
 
         /**
@@ -149,14 +150,14 @@ class Search extends Component {
                 Animated.timing(
                     this.inputFocusPlaceholderAnimated,
                     {
-                        toValue: 20,
+                        toValue: this.props.placeholderExpandedMargin,
                         duration: 200
                     }
                 ).start(),
                 Animated.timing(
                     this.iconSearchAnimated,
                     {
-                        toValue: 10,
+                        toValue: this.props.searchIconExpandedMargin,
                         duration: 200
                     }
                 ).start(),
@@ -193,14 +194,14 @@ class Search extends Component {
                 Animated.timing(
                     this.inputFocusPlaceholderAnimated,
                     {
-                        toValue: this.props.middleWidth - 15,
+                        toValue: this.props.middleWidth - this.props.placeholderCollapsedMargin,
                         duration: 200
                     }
                 ).start(),
                 Animated.timing(
                     this.iconSearchAnimated,
                     {
-                        toValue: this.props.middleWidth - 25,
+                        toValue: this.props.middleWidth - this.props.searchIconCollapsedMargin,
                         duration: 200
                     }
                 ).start(),
@@ -408,11 +409,19 @@ Search.propTypes = {
      * Positioning
      */
     positionRightDelete: PropTypes.number,
+    searchIconCollapsedMargin: PropTypes.number,
+    searchIconExpandedMargin: PropTypes.number,
+    placeholderCollapsedMargin: PropTypes.number,
+    placeholderExpandedMargin: PropTypes.number,
 };
 
 Search.defaultProps = {
     contentWidth: width,
     middleWidth: width / 2,
+    searchIconCollapsedMargin: 25,
+    searchIconExpandedMargin: 10,
+    placeholderCollapsedMargin: 15,
+    placeholderExpandedMargin: 20,
 };
 
 export default Search;
