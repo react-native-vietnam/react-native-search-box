@@ -2,6 +2,8 @@
 - A simple search box with animation, inspired from ios search bar. 
 - No library dependencies, lightweight, fast, flexible, customizable. 
 - Support both iOS/Android devices
+- Support vertical, horizontal layout
+- Shadow invisible by default
 
 ## Install
 ```
@@ -196,12 +198,11 @@ class MyScene extends Component {
 
 ## Prop Defaults
 ```
-    contentWidth: Dimensions.get('window').width,
-    middleWidth: Dimensions.get('window').width / 2,
     searchIconCollapsedMargin: 25,
     searchIconExpandedMargin: 10,
     placeholderCollapsedMargin: 15,
     placeholderExpandedMargin: 20,
+    shadowVisible: false
 ```
 
 ## LICENSE

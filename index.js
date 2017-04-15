@@ -10,7 +10,6 @@ import {
     View
 } from 'react-native';
 
-const { width } = Dimensions.get('window');
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 const containerHeight = 40;
 const middleHeight = 20;
@@ -18,16 +17,23 @@ const middleHeight = 20;
 class Search extends Component {
     constructor(props) {
         super(props);
-        this.state = { keyword: '' };
+
+        this.state = {
+            keyword: '',
+            expanded: false
+        };
+        const { width } = Dimensions.get('window');
+        this.contentWidth = width;
+        this.middleWidth = width / 2;
 
         /**
          * Animated values
          */
-        this.iconSearchAnimated = new Animated.Value(this.props.middleWidth - this.props.searchIconCollapsedMargin);
+        this.iconSearchAnimated = new Animated.Value(this.middleWidth - this.props.searchIconCollapsedMargin);
         this.iconDeleteAnimated = new Animated.Value(0);
-        this.inputFocusWidthAnimated = new Animated.Value(this.props.contentWidth - 10);
-        this.inputFocusPlaceholderAnimated = new Animated.Value(this.props.middleWidth - this.props.placeholderCollapsedMargin);
-        this.btnCancelAnimated = new Animated.Value(this.props.contentWidth);
+        this.inputFocusWidthAnimated = new Animated.Value(this.contentWidth - 10);
+        this.inputFocusPlaceholderAnimated = new Animated.Value(this.middleWidth - this.props.placeholderCollapsedMargin);
+        this.btnCancelAnimated = new Animated.Value(this.contentWidth);
 
         /**
          * functions
@@ -40,6 +46,7 @@ class Search extends Component {
         this.focus = this.focus.bind(this);
         this.expandAnimation = this.expandAnimation.bind(this);
         this.collapseAnimation = this.collapseAnimation.bind(this);
+        this.onLayout = this.onLayout.bind(this);
 
         /**
          * local variables
@@ -52,6 +59,17 @@ class Search extends Component {
          */
         this.shadowOpacityAnimated = new Animated.Value(this.props.shadowOpacityCollapsed);
         this.shadowHeight = this.props.shadowOffsetHeightCollapsed;
+    }
+
+    onLayout = (event) => {
+        const contentWidth = event.nativeEvent.layout.width;
+        this.contentWidth = contentWidth;
+        this.middleWidth = contentWidth / 2;
+        if (this.state.expanded) {
+            this.expandAnimation();
+        } else {
+            this.collapseAnimation();
+        }
     }
 
     /**
@@ -90,6 +108,9 @@ class Search extends Component {
     onFocus = async () => {
         this.props.beforeFocus && await this.props.beforeFocus();
         this.refs.input_keyword._component.isFocused && await this.refs.input_keyword._component.focus();
+        await this.setState(prevState => {
+            return { expanded: !prevState.expanded };
+        });
         await this.expandAnimation();
         this.props.onFocus && await this.props.onFocus(this.state.keyword);
         this.props.afterFocus && await this.props.afterFocus();
@@ -131,6 +152,9 @@ class Search extends Component {
     onCancel = async () => {
         this.props.beforeCancel && await this.props.beforeCancel();
         await this.setState({ keyword: '' });
+        await this.setState(prevState => {
+            return { expanded: !prevState.expanded };
+        });
         await this.collapseAnimation();
         this.props.onCancel && await this.props.onCancel();
         this.props.afterCancel && await this.props.afterCancel();
@@ -142,7 +166,7 @@ class Search extends Component {
                 Animated.timing(
                     this.inputFocusWidthAnimated,
                     {
-                        toValue: this.props.contentWidth - 70,
+                        toValue: this.contentWidth - 70,
                         duration: 200
                     }
                 ).start(),
@@ -194,28 +218,28 @@ class Search extends Component {
                 Animated.timing(
                     this.inputFocusWidthAnimated,
                     {
-                        toValue: this.props.contentWidth - 10,
+                        toValue: this.contentWidth - 10,
                         duration: 200
                     }
                 ).start(),
                 Animated.timing(
                     this.btnCancelAnimated,
                     {
-                        toValue: this.props.contentWidth,
+                        toValue: this.contentWidth,
                         duration: 200
                     }
                 ).start(),
                 Animated.timing(
                     this.inputFocusPlaceholderAnimated,
                     {
-                        toValue: this.props.middleWidth - this.props.placeholderCollapsedMargin,
+                        toValue: this.middleWidth - this.props.placeholderCollapsedMargin,
                         duration: 200
                     }
                 ).start(),
                 Animated.timing(
                     this.iconSearchAnimated,
                     {
-                        toValue: this.props.middleWidth - this.props.searchIconCollapsedMargin,
+                        toValue: this.middleWidth - this.props.searchIconCollapsedMargin,
                         duration: 200
                     }
                 ).start(),
@@ -248,25 +272,28 @@ class Search extends Component {
                         styles.container,
                         this.props.backgroundColor && { backgroundColor: this.props.backgroundColor }
                     ]}
+                onLayout={this.onLayout}
             >
                 <AnimatedTextInput
                     ref="input_keyword"
                     style={[
                         styles.input,
                         this.props.placeholderTextColor && { color: this.props.placeholderTextColor },
+                        this.props.inputStyle && this.props.inputStyle,
                         this.props.inputHeight && { height: this.props.inputHeight },
                         this.props.inputBorderRadius && { borderRadius: this.props.inputBorderRadius },
                         {
                             width: this.inputFocusWidthAnimated,
                             paddingLeft: this.inputFocusPlaceholderAnimated
                         },
-                        {
+                        this.props.shadowVisible && {
                             shadowOffset: { width: this.props.shadowOffsetWidth, height: this.shadowHeight },
                             shadowColor: this.props.shadowColor,
                             shadowOpacity: this.shadowOpacityAnimated,
                             shadowRadius: this.props.shadowRadius,
                         }
                     ]}
+                    editable={this.props.editable}
                     value={this.state.keyword}
                     onChangeText={this.onChangeText}
                     placeholder={this.placeholder}
@@ -277,7 +304,7 @@ class Search extends Component {
                     returnKeyType={this.props.returnKeyType || 'search'}
                     keyboardType={this.props.keyboardType || 'default'}
                     onFocus={this.onFocus}
-                    underlineColorAndroid="transparent"
+                    underlineColorAndroid='transparent'
                 />
                 <TouchableWithoutFeedback onPress={this.onFocus}>
                     <Animated.Image
@@ -333,7 +360,7 @@ const styles = {
         paddingTop: 5,
         paddingBottom: 5,
         paddingRight: 20,
-        borderColor: '#000',
+        borderColor: '#444',
         backgroundColor: '#f7f7f7',
         borderRadius: 5,
         fontSize: 13,
@@ -419,6 +446,11 @@ Search.propTypes = {
     titleCancelColor: PropTypes.string,
     tintColorSearch: PropTypes.string,
     tintColorDelete: PropTypes.string,
+    inputStyle: PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.object
+    ]),
+    onLayout: PropTypes.func,
 
     /**
      * text input
@@ -431,6 +463,7 @@ Search.propTypes = {
     inputBorderRadius: PropTypes.number,
     contentWidth: PropTypes.number,
     middleWidth: PropTypes.number,
+    editable: PropTypes.bool,
 
     /**
      * Positioning
@@ -451,11 +484,11 @@ Search.propTypes = {
     shadowOpacityCollapsed: PropTypes.number,
     shadowOpacityExpanded: PropTypes.number,
     shadowRadius: PropTypes.number,
+    shadowVisible: PropTypes.bool,
 };
 
 Search.defaultProps = {
-    contentWidth: width,
-    middleWidth: width / 2,
+    editable: true,
     searchIconCollapsedMargin: 25,
     searchIconExpandedMargin: 10,
     placeholderCollapsedMargin: 15,
@@ -467,6 +500,7 @@ Search.defaultProps = {
     shadowOpacityCollapsed: 0.12,
     shadowOpacityExpanded: 0.24,
     shadowRadius: 4,
+    shadowVisible: false,
 };
 
 export default Search;
