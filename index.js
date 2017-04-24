@@ -303,6 +303,7 @@ class Search extends Component {
                     blurOnSubmit={false}
                     returnKeyType={this.props.returnKeyType || 'search'}
                     keyboardType={this.props.keyboardType || 'default'}
+                    autoCapitalize={this.props.autoCapitalize}
                     onFocus={this.onFocus}
                     underlineColorAndroid='transparent'
                 />
@@ -459,6 +460,7 @@ Search.propTypes = {
     cancelTitle: PropTypes.string,
     returnKeyType: PropTypes.string,
     keyboardType: PropTypes.string,
+    autoCapitalize: PropTypes.string,
     inputHeight: PropTypes.number,
     inputBorderRadius: PropTypes.number,
     contentWidth: PropTypes.number,

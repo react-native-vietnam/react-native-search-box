@@ -1,6 +1,6 @@
 ## React Native Search Box
-- A simple search box with animation, inspired from ios search bar. 
-- No library dependencies, lightweight, fast, flexible, customizable. 
+- A simple search box with animation, inspired from ios search bar.
+- No library dependencies, lightweight, fast, flexible, customizable.
 - Support both iOS/Android devices
 - Support vertical, horizontal layout
 - Shadow invisible by default
@@ -63,10 +63,10 @@ class MyScene extends Component {
 
     renderRow = (item, sectionId, index) => {
       return (
-        <TouchableHightLight 
-          style={{ 
-            height: rowHeight, 
-            justifyContent: 'center', 
+        <TouchableHightLight
+          style={{
+            height: rowHeight,
+            justifyContent: 'center',
             alignItems: 'center'}}
         >
           <Text>{item.name}</Text>
@@ -97,7 +97,7 @@ class MyScene extends Component {
             resolve();
         });
     }
-    
+
   render() {
     // inside your render function
     return (
@@ -181,6 +181,7 @@ class MyScene extends Component {
     cancelTitle: PropTypes.string,
     returnKeyType: PropTypes.string,
     keyboardType: PropTypes.string,
+    autoCapitalize: PropTypes.string,
     inputHeight: PropTypes.number,
     inputBorderRadius: PropTypes.number,
     contentWidth: PropTypes.number,
