@@ -308,32 +308,56 @@ class Search extends Component {
                     underlineColorAndroid='transparent'
                 />
                 <TouchableWithoutFeedback onPress={this.onFocus}>
-                    <Animated.Image
-                        source={require('./img/search.png')}
-                        style={[
-                            styles.iconSearch,
-                            this.props.tintColorSearch && { tintColor: this.props.tintColorSearch },
-                            {
-                                left: this.iconSearchAnimated,
-                            }
-                        ]}
-                    />
+                    {((this.props.iconSearch) ?
+                        <Animated.View
+                            style={[
+                                styles.iconSearch,
+                                {left: this.iconSearchAnimated}
+                            ]}>
+                            {this.props.iconSearch}
+                        </Animated.View>
+                        :
+                        <Animated.Image
+                            source={require('./img/search.png')}
+                            style={[
+                                styles.iconSearch,
+                                styles.iconSearchDefault,
+                                this.props.tintColorSearch && { tintColor: this.props.tintColorSearch },
+                                {
+                                    left: this.iconSearchAnimated,
+                                }
+                            ]}
+                        />
+                    )}
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={this.onDelete}>
-                    <Animated.Image
-                        source={require('./img/delete.png')}
-                        style={[
-                            styles.iconDelete,
-                            this.props.tintColorDelete && { tintColor: this.props.tintColorDelete },
-                            this.props.positionRightDelete && { right: this.props.positionRightDelete },
-                            { opacity: this.iconDeleteAnimated }
-                        ]}
-                    />
+                    {((this.props.iconDelete) ?
+                        <Animated.View
+                            style={[
+                                styles.iconDelete,
+                                this.props.positionRightDelete && { right: this.props.positionRightDelete },
+                                { opacity: this.iconDeleteAnimated }
+                            ]}>
+                            {this.props.iconDelete}
+                        </Animated.View>
+                        :
+                        <Animated.Image
+                            source={require('./img/delete.png')}
+                            style={[
+                                styles.iconDelete,
+                                styles.iconDeleteDefault,
+                                this.props.tintColorDelete && { tintColor: this.props.tintColorDelete },
+                                this.props.positionRightDelete && { right: this.props.positionRightDelete },
+                                { opacity: this.iconDeleteAnimated }
+                            ]}
+                        />
+                    )}
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={this.onCancel}>
                     <Animated.View
                         style={[
                             styles.cancelButton,
+                            this.props.cancelButtonStyle && this.props.cancelButtonStyle,
                             { left: this.btnCancelAnimated }
                         ]}
                     >
@@ -371,17 +395,21 @@ const styles = {
         flex: 1,
         position: 'absolute',
         top: middleHeight - 7,
-        tintColor: 'grey',
         height: 14,
         width: 14,
+    },
+    iconSearchDefault: {
+        tintColor: 'grey',
     },
     iconDelete: {
         position: 'absolute',
         right: 70,
         top: middleHeight - 7,
-        tintColor: 'grey',
         height: 14,
         width: 14,
+    },
+    iconDeleteDefault: {
+        tintColor: 'grey',
     },
     cancelButton: {
         justifyContent: 'center',
@@ -449,15 +477,22 @@ Search.propTypes = {
     tintColorDelete: PropTypes.string,
     inputStyle: PropTypes.oneOfType([
         PropTypes.number,
-        PropTypes.object
+        PropTypes.object,
+        View.propTypes.style
     ]),
     onLayout: PropTypes.func,
+    cancelButtonStyle: View.propTypes.style,
 
     /**
      * text input
      */
     placeholder: PropTypes.string,
-    cancelTitle: PropTypes.string,
+    cancelTitle: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.object
+    ]),
+    iconDelete: PropTypes.object,
+    iconSearch: PropTypes.object,
     returnKeyType: PropTypes.string,
     keyboardType: PropTypes.string,
     autoCapitalize: PropTypes.string,

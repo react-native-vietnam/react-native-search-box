@@ -173,12 +173,24 @@ class MyScene extends Component {
     titleCancelColor: PropTypes.string,
     tintColorSearch: PropTypes.string,
     tintColorDelete: PropTypes.string,
+    cancelButtonStyle: View.propTypes.style,
+    onLayout: PropTypes.func,
+    inputStyle: PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.object,
+        View.propTypes.style
+    ]),
 
     /**
      * text input
      */
     placeholder: PropTypes.string,
-    cancelTitle: PropTypes.string,
+    cancelTitle: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.object
+    ]),
+    iconDelete: PropTypes.object,
+    iconSearch: PropTypes.object,
     returnKeyType: PropTypes.string,
     keyboardType: PropTypes.string,
     autoCapitalize: PropTypes.string,
