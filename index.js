@@ -78,7 +78,7 @@ class Search extends Component {
      */
     onSearch = async () => {
         this.props.beforeSearch && await this.props.beforeSearch(this.state.keyword);
-        if ( this.props.keyboardShouldPersist === true ) {
+        if ( this.props.keyboardShouldPersist === false ) {
             await Keyboard.dismiss();
         }
         this.props.onSearch && await this.props.onSearch(this.state.keyword);
@@ -216,7 +216,7 @@ class Search extends Component {
     collapseAnimation = ( isForceAnim = false ) => {
         return new Promise((resolve, reject) => {
             Animated.parallel([
-                ( ( this.props.keyboardShouldPersist === true ) ? Keyboard.dismiss() : null ),
+                ( ( this.props.keyboardShouldPersist === false ) ? Keyboard.dismiss() : null ),
                 Animated.timing(
                     this.inputFocusWidthAnimated,
                     {
@@ -231,7 +231,7 @@ class Search extends Component {
                         duration: 200
                     }
                 ).start(),
-                ( ( this.props.keyboardShouldPersist === true ) ?
+                ( ( this.props.keyboardShouldPersist === false ) ?
                 Animated.timing(
                     this.inputFocusPlaceholderAnimated,
                     {
@@ -239,7 +239,7 @@ class Search extends Component {
                         duration: 200
                     }
                 ).start() : null ),
-                ( ( this.props.keyboardShouldPersist === true || isForceAnim === true ) ?
+                ( ( this.props.keyboardShouldPersist === false || isForceAnim === true ) ?
                 Animated.timing(
                     this.iconSearchAnimated,
                     {
@@ -534,7 +534,7 @@ Search.propTypes = {
 Search.defaultProps = {
     editable: true,
     blurOnSubmit: false,
-    keyboardShouldPersist: true,
+    keyboardShouldPersist: false,
     searchIconCollapsedMargin: 25,
     searchIconExpandedMargin: 10,
     placeholderCollapsedMargin: 15,
