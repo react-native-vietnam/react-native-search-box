@@ -198,6 +198,8 @@ class MyScene extends Component {
     inputBorderRadius: PropTypes.number,
     contentWidth: PropTypes.number,
     middleWidth: PropTypes.number,
+    blurOnSubmit: PropTypes.bool,
+    keyboardDismissOnSubmit: PropTypes.bool,
 
     /**
      * Positioning

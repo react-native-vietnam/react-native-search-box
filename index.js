@@ -78,7 +78,9 @@ class Search extends Component {
      */
     onSearch = async () => {
         this.props.beforeSearch && await this.props.beforeSearch(this.state.keyword);
-        await Keyboard.dismiss();
+        if ( this.props.keyboardShouldPersist === true ) {
+            await Keyboard.dismiss();
+        }
         this.props.onSearch && await this.props.onSearch(this.state.keyword);
         this.props.afterSearch && await this.props.afterSearch(this.state.keyword);
     }
@@ -155,7 +157,7 @@ class Search extends Component {
         await this.setState(prevState => {
             return { expanded: !prevState.expanded };
         });
-        await this.collapseAnimation();
+        await this.collapseAnimation( true );
         this.props.onCancel && await this.props.onCancel();
         this.props.afterCancel && await this.props.afterCancel();
     }
@@ -211,10 +213,10 @@ class Search extends Component {
         });
     }
 
-    collapseAnimation = () => {
+    collapseAnimation = ( isForceAnim = false ) => {
         return new Promise((resolve, reject) => {
             Animated.parallel([
-                Keyboard.dismiss(),
+                ( ( this.props.keyboardShouldPersist === true ) ? Keyboard.dismiss() : null ),
                 Animated.timing(
                     this.inputFocusWidthAnimated,
                     {
@@ -229,20 +231,22 @@ class Search extends Component {
                         duration: 200
                     }
                 ).start(),
+                ( ( this.props.keyboardShouldPersist === true ) ?
                 Animated.timing(
                     this.inputFocusPlaceholderAnimated,
                     {
                         toValue: this.middleWidth - this.props.placeholderCollapsedMargin,
                         duration: 200
                     }
-                ).start(),
+                ).start() : null ),
+                ( ( this.props.keyboardShouldPersist === true || isForceAnim === true ) ?
                 Animated.timing(
                     this.iconSearchAnimated,
                     {
                         toValue: this.middleWidth - this.props.searchIconCollapsedMargin,
                         duration: 200
                     }
-                ).start(),
+                ).start() : null ),
                 Animated.timing(
                     this.iconDeleteAnimated,
                     {
@@ -291,7 +295,8 @@ class Search extends Component {
                             shadowColor: this.props.shadowColor,
                             shadowOpacity: this.shadowOpacityAnimated,
                             shadowRadius: this.props.shadowRadius,
-                        }
+                        },
+
                     ]}
                     editable={this.props.editable}
                     value={this.state.keyword}
@@ -300,7 +305,7 @@ class Search extends Component {
                     placeholderTextColor={this.props.placeholderTextColor || styles.placeholderColor}
                     onSubmitEditing={this.onSearch}
                     autoCorrect={false}
-                    blurOnSubmit={false}
+                    blurOnSubmit={this.props.blurOnSubmit}
                     returnKeyType={this.props.returnKeyType || 'search'}
                     keyboardType={this.props.keyboardType || 'default'}
                     autoCapitalize={this.props.autoCapitalize}
@@ -366,7 +371,7 @@ class Search extends Component {
                         </Text>
                     </Animated.View>
                 </TouchableWithoutFeedback>
-            </Animated.View >
+            </Animated.View>
         );
     }
 }
@@ -501,6 +506,8 @@ Search.propTypes = {
     contentWidth: PropTypes.number,
     middleWidth: PropTypes.number,
     editable: PropTypes.bool,
+    blurOnSubmit: PropTypes.bool,
+    keyboardShouldPersist: PropTypes.bool,
 
     /**
      * Positioning
@@ -526,6 +533,8 @@ Search.propTypes = {
 
 Search.defaultProps = {
     editable: true,
+    blurOnSubmit: false,
+    keyboardShouldPersist: true,
     searchIconCollapsedMargin: 25,
     searchIconExpandedMargin: 10,
     placeholderCollapsedMargin: 15,
