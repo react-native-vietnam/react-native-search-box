@@ -173,6 +173,7 @@ class MyScene extends Component {
     titleCancelColor: PropTypes.string,
     tintColorSearch: PropTypes.string,
     tintColorDelete: PropTypes.string,
+    cancelButtonStyle: PropTypes.object,
 
     /**
      * text input
