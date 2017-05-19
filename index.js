@@ -366,7 +366,11 @@ class Search extends Component {
                             { left: this.btnCancelAnimated }
                         ]}
                     >
-                        <Text style={[styles.cancelButtonText, this.props.titleCancelColor && { color: this.props.titleCancelColor }]}>
+                        <Text style={[
+                                  styles.cancelButtonText,
+                                  this.props.titleCancelColor && { color: this.props.titleCancelColor },
+                                  this.props.cancelButtonStyle && this.props.cancelButtonStyle
+                              ]}>
                             {this.cancelTitle}
                         </Text>
                     </Animated.View>
@@ -484,6 +488,10 @@ Search.propTypes = {
         PropTypes.number,
         PropTypes.object,
         View.propTypes.style
+    ]),
+    cancelButtonStyle: PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.object
     ]),
     onLayout: PropTypes.func,
     cancelButtonStyle: View.propTypes.style,

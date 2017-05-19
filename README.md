@@ -173,12 +173,14 @@ class MyScene extends Component {
     titleCancelColor: PropTypes.string,
     tintColorSearch: PropTypes.string,
     tintColorDelete: PropTypes.string,
-    cancelButtonStyle: View.propTypes.style,
+    cancelButtonStyle: PropTypes.PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.object
+    ]),
     onLayout: PropTypes.func,
     inputStyle: PropTypes.oneOfType([
         PropTypes.number,
-        PropTypes.object,
-        View.propTypes.style
+        PropTypes.object
     ]),
 
     /**
