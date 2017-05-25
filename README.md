@@ -173,12 +173,26 @@ class MyScene extends Component {
     titleCancelColor: PropTypes.string,
     tintColorSearch: PropTypes.string,
     tintColorDelete: PropTypes.string,
+    cancelButtonStyle: PropTypes.PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.object
+    ]),
+    onLayout: PropTypes.func,
+    inputStyle: PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.object
+    ]),
 
     /**
      * text input
      */
     placeholder: PropTypes.string,
-    cancelTitle: PropTypes.string,
+    cancelTitle: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.object
+    ]),
+    iconDelete: PropTypes.object,
+    iconSearch: PropTypes.object,
     returnKeyType: PropTypes.string,
     keyboardType: PropTypes.string,
     autoCapitalize: PropTypes.string,
@@ -186,6 +200,8 @@ class MyScene extends Component {
     inputBorderRadius: PropTypes.number,
     contentWidth: PropTypes.number,
     middleWidth: PropTypes.number,
+    blurOnSubmit: PropTypes.bool,
+    keyboardDismissOnSubmit: PropTypes.bool,
 
     /**
      * Positioning
