@@ -85,7 +85,7 @@ class MyScene extends Component {
     // Important: You must return a Promise
     onFocus = (text) => {
         return new Promise((resolve, reject) => {
-            console.log('beforeFocus', text);
+            console.log('onFocus', text);
             resolve();
         });
     }
