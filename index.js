@@ -7,7 +7,8 @@ import {
     Dimensions,
     Keyboard,
     Image,
-    View
+    View,
+    Platform
 } from 'react-native';
 
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
@@ -65,10 +66,12 @@ class Search extends Component {
         const contentWidth = event.nativeEvent.layout.width;
         this.contentWidth = contentWidth;
         this.middleWidth = contentWidth / 2;
-        if (this.state.expanded) {
-            this.expandAnimation();
-        } else {
-            this.collapseAnimation();
+        if (Platform.OS === 'ios') {
+          if (this.state.expanded) {
+              this.expandAnimation();
+          } else {
+              this.collapseAnimation();
+          }
         }
     }
 
