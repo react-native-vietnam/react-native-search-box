@@ -346,6 +346,7 @@ class Search extends PureComponent {
             style={[
               styles.cancelButton,
               this.props.cancelButtonStyle && this.props.cancelButtonStyle,
+              this.props.cancelButtonViewStyle && this.props.cancelButtonViewStyle,
               { left: this.btnCancelAnimated }
             ]}
           >
@@ -355,7 +356,8 @@ class Search extends PureComponent {
                 this.props.titleCancelColor && {
                   color: this.props.titleCancelColor
                 },
-                this.props.cancelButtonStyle && this.props.cancelButtonStyle
+                this.props.cancelButtonStyle && this.props.cancelButtonStyle,
+                this.props.cancelButtonTextStyle && this.props.cancelButtonTextStyle,
               ]}
             >
               {this.cancelTitle}
@@ -479,6 +481,8 @@ Search.propTypes = {
   cancelButtonStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object]),
   onLayout: PropTypes.func,
   cancelButtonStyle: View.propTypes.style,
+  cancelButtonTextStyle: Text.propTypes.style,
+  cancelButtonViewStyle: View.propTypes.style,
 
   /**
      * text input
