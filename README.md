@@ -177,6 +177,10 @@ class MyScene extends PureComponent {
         PropTypes.number,
         PropTypes.object
     ]),
+    cancelButtonTextStyle: PropTypes.PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.object
+    ]),
     onLayout: PropTypes.func,
     inputStyle: PropTypes.oneOfType([
         PropTypes.number,
