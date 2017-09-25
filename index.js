@@ -27,6 +27,8 @@ class Search extends PureComponent {
     this.contentWidth = width;
     this.middleWidth = width / 2;
 
+    this.cancelButtonWidth = this.props.cancelButtonWidth || 70;
+
     /**
      * Animated values
      */
@@ -171,7 +173,7 @@ class Search extends PureComponent {
     return new Promise((resolve, reject) => {
       Animated.parallel([
         Animated.timing(this.inputFocusWidthAnimated, {
-          toValue: this.contentWidth - 70,
+          toValue: this.contentWidth - this.cancelButtonWidth,
           duration: 200
         }).start(),
         Animated.timing(this.btnCancelAnimated, {
@@ -473,6 +475,7 @@ Search.propTypes = {
   titleCancelColor: PropTypes.string,
   tintColorSearch: PropTypes.string,
   tintColorDelete: PropTypes.string,
+  cancelButtonWidth: PropTypes.number,
   inputStyle: PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.object,
@@ -532,6 +535,7 @@ Search.defaultProps = {
   searchIconExpandedMargin: 10,
   placeholderCollapsedMargin: 15,
   placeholderExpandedMargin: 20,
+  cancelButtonWidth: 70,
   shadowOffsetWidth: 0,
   shadowOffsetHeightCollapsed: 2,
   shadowOffsetHeightExpanded: 4,

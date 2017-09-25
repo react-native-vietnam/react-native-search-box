@@ -173,6 +173,7 @@ class MyScene extends PureComponent {
     titleCancelColor: PropTypes.string,
     tintColorSearch: PropTypes.string,
     tintColorDelete: PropTypes.string,
+    cancelButtonWidth: PropTypes.number,
     cancelButtonStyle: PropTypes.PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.object
