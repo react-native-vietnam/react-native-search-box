@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {
   Text,
   TouchableWithoutFeedback,
+  TouchableOpacity,
   TextInput,
   Animated,
   Dimensions,
@@ -278,6 +279,7 @@ class Search extends PureComponent {
               shadowRadius: this.props.shadowRadius
             }
           ]}
+          onEndEditing={this.onCancel}
           editable={this.props.editable}
           value={this.state.keyword}
           onChangeText={this.onChangeText}
@@ -285,6 +287,7 @@ class Search extends PureComponent {
           placeholderTextColor={
             this.props.placeholderTextColor || styles.placeholderColor
           }
+          selectionColor={this.props.selectionColor}
           onSubmitEditing={this.onSearch}
           autoCorrect={false}
           blurOnSubmit={this.props.blurOnSubmit}
@@ -315,7 +318,7 @@ class Search extends PureComponent {
                 ]}
               />}
         </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={this.onDelete}>
+        {this.props.useClearButton && <TouchableWithoutFeedback onPress={this.onDelete}>
           {this.props.iconDelete
             ? <Animated.View
                 style={[
@@ -342,8 +345,9 @@ class Search extends PureComponent {
                   { opacity: this.iconDeleteAnimated }
                 ]}
               />}
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={this.onCancel}>
+        </TouchableWithoutFeedback>}
+
+        <TouchableOpacity onPress={this.onCancel}>
           <Animated.View
             style={[
               styles.cancelButton,
@@ -365,7 +369,7 @@ class Search extends PureComponent {
               {this.cancelTitle}
             </Text>
           </Animated.View>
-        </TouchableWithoutFeedback>
+        </TouchableOpacity>
       </Animated.View>
     );
   }
@@ -475,7 +479,6 @@ Search.propTypes = {
   titleCancelColor: PropTypes.string,
   tintColorSearch: PropTypes.string,
   tintColorDelete: PropTypes.string,
-  cancelButtonWidth: PropTypes.number,
   inputStyle: PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.object,
@@ -504,6 +507,7 @@ Search.propTypes = {
   editable: PropTypes.bool,
   blurOnSubmit: PropTypes.bool,
   keyboardShouldPersist: PropTypes.bool,
+  useClearButton: PropTypes.bool,
 
   /**
      * Positioning
@@ -535,7 +539,6 @@ Search.defaultProps = {
   searchIconExpandedMargin: 10,
   placeholderCollapsedMargin: 15,
   placeholderExpandedMargin: 20,
-  cancelButtonWidth: 70,
   shadowOffsetWidth: 0,
   shadowOffsetHeightCollapsed: 2,
   shadowOffsetHeightExpanded: 4,
@@ -543,7 +546,8 @@ Search.defaultProps = {
   shadowOpacityCollapsed: 0.12,
   shadowOpacityExpanded: 0.24,
   shadowRadius: 4,
-  shadowVisible: false
+  shadowVisible: false,
+  useClearButton: true,
 };
 
 export default Search;
