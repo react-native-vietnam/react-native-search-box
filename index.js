@@ -542,7 +542,7 @@ Search.propTypes = {
 
 Search.defaultProps = {
   editable: true,
-  blurOnSubmit: false,
+  blurOnSubmit: true,
   keyboardShouldPersist: false,
   searchIconCollapsedMargin: 25,
   searchIconExpandedMargin: 10,
