@@ -160,22 +160,42 @@ class Search extends PureComponent {
     });
     await this.setState({ keyword: '' });
     this.props.onDelete && (await this.props.onDelete());
+    this.props.onChangeText && (await this.props.onChangeText(this.state.keyword));
     this.props.afterDelete && (await this.props.afterDelete());
   };
+
+  /**
+     * onEndEditting
+     * async await
+     */
+  onEndEditing = async() => {
+    this.props.beforeEndEditing && (await this.props.beforeEndEditing());
+    this.props.onEndEditing && (await this.props.onEndEditing());
+    this.props.afterEndEditing && (await this.props.afterEndEditing());
+  }
 
   /**
      * onCancel
      * async await
      */
-  onCancel = async () => {
+  onCancel = async (endEditing = false) => {
     this.props.beforeCancel && (await this.props.beforeCancel());
+    if (endEditing)
+      this.props.beforeEndEditing && (await this.props.beforeEndEditing());
+
     await this.setState({ keyword: '' });
     await this.setState(prevState => {
       return { expanded: !prevState.expanded };
     });
     await this.collapseAnimation(true);
+
     this.props.onCancel && (await this.props.onCancel());
+    if (endEditing)
+      this.props.onEndEditing && (await this.props.onEndEditing());
+
     this.props.afterCancel && (await this.props.afterCancel());
+    if (endEditing)
+      this.props.afterEndEditing && (await this.props.afterEndEditing());
   };
 
   expandAnimation = () => {
@@ -287,7 +307,7 @@ class Search extends PureComponent {
               shadowRadius: this.props.shadowRadius
             }
           ]}
-          onEndEditing={this.onCancel}
+          onEndEditing={this.props.cancelOnDismiss ? () => this.onCancel(true) : this.onEndEditing}
           editable={this.props.editable}
           value={this.state.keyword}
           onChangeText={this.onChangeText}
@@ -435,7 +455,7 @@ const styles = {
     color: '#fff'
   }
 };
-                     
+
 /**
  * Props
  */
@@ -479,6 +499,21 @@ Search.propTypes = {
   beforeDelete: PropTypes.func,
   onDelete: PropTypes.func,
   afterDelete: PropTypes.func,
+
+  /**
+     * async await
+     * return a Promise
+     * beforeEndEditing, onEndEditing, afterEndEditing
+     */
+  beforeEndEditing: PropTypes.func,
+  onEndEditing: PropTypes.func,
+  afterEndEditing: PropTypes.func,
+
+  /**
+     * boolean that defines if should trigger onCancel
+     * with
+     */
+  cancelOnDismiss: PropTypes.bool,
 
   /**
      * styles
@@ -543,6 +578,7 @@ Search.propTypes = {
 Search.defaultProps = {
   editable: true,
   blurOnSubmit: true,
+  cancelOnDismiss: true,
   keyboardShouldPersist: false,
   searchIconCollapsedMargin: 25,
   searchIconExpandedMargin: 10,

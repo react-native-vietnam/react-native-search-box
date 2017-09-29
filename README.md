@@ -167,6 +167,22 @@ class MyScene extends PureComponent {
     afterDelete: PropTypes.func,
 
     /**
+       * async await
+       * return a Promise
+       * beforeEndEditing, onEndEditing, afterEndEditing
+       */
+    beforeEndEditing: PropTypes.func,
+    onEndEditing: PropTypes.func,
+    afterEndEditing: PropTypes.func,
+
+  /**
+     * boolean that defines if should trigger onCancel setting false 
+     * will only trigger beforeEndEditing, onEndEditing, afterEndEditing 
+     * with true, beforeCancel, onCancel and afterDelete too.
+     */
+  cancelOnDismiss: PropTypes.bool
+
+    /**
      * styles
      */
     backgroundColor: PropTypes.string,
@@ -225,7 +241,8 @@ class MyScene extends PureComponent {
     searchIconExpandedMargin: 10,
     placeholderCollapsedMargin: 15,
     placeholderExpandedMargin: 20,
-    shadowVisible: false
+    shadowVisible: false,
+    cancelOnDismiss: true,
 ```
 
 ## LICENSE
