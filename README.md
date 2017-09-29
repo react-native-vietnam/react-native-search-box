@@ -137,6 +137,7 @@ class MyScene extends PureComponent {
     /**
      * onSearch
      * return a Promise
+     * NOTE: As of RN V0.48.3 the blurOnSubmit property must be set to {true} for this to trigger
      */
     beforeSearch: PropTypes.func,
     onSearch: PropTypes.func,
