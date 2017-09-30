@@ -14,7 +14,7 @@ import {
 
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 const containerHeight = 40;
-const middleHeight = 20;
+let middleHeight = 20;
 
 class Search extends PureComponent {
   constructor(props) {
@@ -28,6 +28,9 @@ class Search extends PureComponent {
     this.contentWidth = width;
     this.middleWidth = width / 2;
     this.cancelButtonWidth = this.props.cancelButtonWidth || 70;
+
+    if (typeof props.inputHeight == 'number')
+      middleHeight = (10 + props.inputHeight) / 2;
 
     /**
      * Animated values
@@ -560,4 +563,3 @@ Search.defaultProps = {
 };
 
 export default Search;
-
