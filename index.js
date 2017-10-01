@@ -14,7 +14,6 @@ import {
 
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 const containerHeight = 40;
-let middleHeight = 20;
 
 class Search extends PureComponent {
   constructor(props) {
@@ -28,9 +27,6 @@ class Search extends PureComponent {
     this.contentWidth = width;
     this.middleWidth = width / 2;
     this.cancelButtonWidth = this.props.cancelButtonWidth || 70;
-
-    if (typeof props.inputHeight == 'number')
-      middleHeight = (10 + props.inputHeight) / 2;
 
     /**
      * Animated values
@@ -253,6 +249,7 @@ class Search extends PureComponent {
   };
 
   render() {
+    const styles = getStyles(this.props.inputHeight);
     return (
       <Animated.View
         ref="searchContainer"
@@ -386,59 +383,65 @@ class Search extends PureComponent {
   }
 }
 
-const styles = {
-  container: {
-    backgroundColor: 'grey',
-    height: containerHeight,
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    padding: 5
-  },
-  input: {
-    height: containerHeight - 10,
-    paddingTop: 5,
-    paddingBottom: 5,
-    paddingRight: 20,
-    borderColor: '#444',
-    backgroundColor: '#f7f7f7',
-    borderRadius: 5,
-    fontSize: 13
-  },
-  placeholderColor: 'grey',
-  iconSearch: {
-    flex: 1,
-    position: 'absolute',
-    top: middleHeight - 7,
-    height: 14,
-    width: 14
-  },
-  iconSearchDefault: {
-    tintColor: 'grey'
-  },
-  iconDelete: {
-    position: 'absolute',
-    right: 70,
-    top: middleHeight - 7,
-    height: 14,
-    width: 14
-  },
-  iconDeleteDefault: {
-    tintColor: 'grey'
-  },
-  cancelButton: {
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-    backgroundColor: 'transparent',
-    width: 60,
-    height: 50
-  },
-  cancelButtonText: {
-    fontSize: 14,
-    color: '#fff'
-  }
-};
-                     
+const getStyles = (inputHeight) => {
+  let middleHeight = 20
+  if (typeof inputHeight == 'number')
+    middleHeight = (10 + inputHeight) / 2;
+
+  return {
+    container: {
+      backgroundColor: 'grey',
+      height: containerHeight,
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      padding: 5
+    },
+    input: {
+      height: containerHeight - 10,
+      paddingTop: 5,
+      paddingBottom: 5,
+      paddingRight: 20,
+      borderColor: '#444',
+      backgroundColor: '#f7f7f7',
+      borderRadius: 5,
+      fontSize: 13
+    },
+    placeholderColor: 'grey',
+    iconSearch: {
+      flex: 1,
+      position: 'absolute',
+      top: middleHeight - 7,
+      height: 14,
+      width: 14
+    },
+    iconSearchDefault: {
+      tintColor: 'grey'
+    },
+    iconDelete: {
+      position: 'absolute',
+      right: 70,
+      top: middleHeight - 7,
+      height: 14,
+      width: 14
+    },
+    iconDeleteDefault: {
+      tintColor: 'grey'
+    },
+    cancelButton: {
+      justifyContent: 'center',
+      alignItems: 'flex-start',
+      backgroundColor: 'transparent',
+      width: 60,
+      height: 50
+    },
+    cancelButtonText: {
+      fontSize: 14,
+      color: '#fff'
+    }
+  };
+}
+
 /**
  * Props
  */
