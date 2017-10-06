@@ -287,7 +287,6 @@ class Search extends PureComponent {
               shadowRadius: this.props.shadowRadius
             }
           ]}
-          onEndEditing={this.onCancel}
           editable={this.props.editable}
           value={this.state.keyword}
           onChangeText={this.onChangeText}
