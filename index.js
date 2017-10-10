@@ -498,11 +498,10 @@ Search.propTypes = {
     PropTypes.object,
     PropTypes.style
   ]),
-  cancelButtonStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object]),
+  cancelButtonStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.style]),
   onLayout: PropTypes.func,
-  cancelButtonStyle: PropTypes.style,
   cancelButtonTextStyle: Text.propTypes.style,
-  cancelButtonViewStyle: PropTypes.style,
+  cancelButtonViewStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.style]),
 
   /**
      * text input
