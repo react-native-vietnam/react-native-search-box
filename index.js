@@ -72,6 +72,9 @@ class Search extends PureComponent {
   }
 
   componentDidMount() {
+    if(this.props.initialText) {
+      this.setState({keyword: this.props.initialText})
+    }
     if(this.autoFocus) {
       this.setState({expanded: true})
       this.refs.input_keyword._component.focus();
@@ -509,6 +512,7 @@ Search.propTypes = {
   /**
      * text input
      */
+  initialText: PropTypes.string,	     
   placeholder: PropTypes.string,
   cancelTitle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   iconDelete: PropTypes.object,
