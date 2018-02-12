@@ -1,6 +1,6 @@
 {
   "name": "react-native-search-box",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description":
     "A simple search box with animation, inspired from ios search bar. Lightweight, fast, flexible, customizable. Support both iOS/Android devices",
   "main": "index.js",
