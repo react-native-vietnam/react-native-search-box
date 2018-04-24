@@ -403,7 +403,7 @@ const getStyles = (inputHeight, isRtl) => {
       paddingTop: 5,
       paddingBottom: 5,
       [isRtl ? 'paddingRight' : 'paddingLeft']: 20,
-      textAlign: isRtl ? 'right' : 'text',
+      textAlign: isRtl ? 'right' : 'left',
       borderColor: '#444',
       backgroundColor: '#f7f7f7',
       borderRadius: 5,
