@@ -502,7 +502,7 @@ Search.propTypes = {
     ViewPropTypes.style,
     Text.propTypes.style
   ]),
-  direction: PropTypes.string,
+  direction: PropTypes.oneOf['ltr', 'rtl'],
   cancelButtonStyle: PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.object,
