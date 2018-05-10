@@ -349,7 +349,8 @@ class Search extends PureComponent {
                     tintColor: this.props.tintColorDelete
                   },
                   this.props.positionRightDelete && {
-                    [isRtl ? 'left' : 'right']: this.props.positionRightDelete
+                    [isRtl ? 'left' : 'right']: this.props.positionRightDelete,
+                    [isRtl ? 'right' : 'left']: undefined,
                   },
                   { opacity: this.iconDeleteAnimated }
                 ]}
