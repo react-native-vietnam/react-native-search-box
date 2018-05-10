@@ -178,6 +178,16 @@ class Search extends PureComponent {
     this.props.afterCancel && (await this.props.afterCancel());
   };
 
+  onBlur = async () => {
+    this.props.beforeCancel && (await this.props.beforeBlur());
+    await this.setState(prevState => {
+      return { expanded: !prevState.expanded };
+    });
+    await this.collapseAnimation(true);
+    this.props.onBlur && (await this.props.onBlur());
+    this.props.afterBlur && (await this.props.afterBlur());
+  };
+
   expandAnimation = () => {
     return new Promise((resolve, reject) => {
       Animated.parallel([
@@ -304,6 +314,7 @@ class Search extends PureComponent {
           keyboardType={this.props.keyboardType || 'default'}
           autoCapitalize={this.props.autoCapitalize}
           onFocus={this.onFocus}
+          onBlur={this.onBlur}
           underlineColorAndroid="transparent"
         />
         <TouchableWithoutFeedback onPress={this.onFocus}>
