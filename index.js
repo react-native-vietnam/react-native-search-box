@@ -422,7 +422,7 @@ const getStyles = (inputHeight, isRtl) => {
     },
     iconDelete: {
       position: 'absolute',
-      [isRtl ? 'right' : 'left']: 70,
+      [isRtl ? 'left' : 'right']: 70,
       top: middleHeight - 7,
       height: 14,
       width: 14
