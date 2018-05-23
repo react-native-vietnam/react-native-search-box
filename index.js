@@ -180,10 +180,12 @@ class Search extends PureComponent {
 
   onBlur = async () => {
     this.props.beforeCancel && (await this.props.beforeBlur());
-    await this.setState(prevState => {
-      return { expanded: !prevState.expanded };
-    });
-    await this.collapseAnimation(true);
+    if (this.props.collapseOnBlur) {
+      await this.setState(prevState => {
+        return { expanded: !prevState.expanded };
+      });
+      await this.collapseAnimation(true);
+    }
     this.props.onBlur && (await this.props.onBlur());
     this.props.afterBlur && (await this.props.afterBlur());
   };
@@ -553,6 +555,7 @@ Search.propTypes = {
   searchIconExpandedMargin: PropTypes.number,
   placeholderCollapsedMargin: PropTypes.number,
   placeholderExpandedMargin: PropTypes.number,
+  collapseOnBlur: PropTypes.bool,
 
   /**
    * Shadow
@@ -568,6 +571,7 @@ Search.propTypes = {
 };
 
 Search.defaultProps = {
+  collapseOnBlur: true,
   editable: true,
   blurOnSubmit: true,
   keyboardShouldPersist: false,
