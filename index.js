@@ -178,6 +178,18 @@ class Search extends PureComponent {
     this.props.afterCancel && (await this.props.afterCancel());
   };
 
+  onBlur = async () => {
+    this.props.beforeBlur && (await this.props.beforeBlur());
+    if (this.props.collapseOnBlur) {
+      await this.setState(prevState => {
+        return { expanded: !prevState.expanded };
+      });
+      await this.collapseAnimation(true);
+    }
+    this.props.onBlur && (await this.props.onBlur());
+    this.props.afterBlur && (await this.props.afterBlur());
+  };
+
   expandAnimation = () => {
     return new Promise((resolve, reject) => {
       Animated.parallel([
@@ -304,6 +316,7 @@ class Search extends PureComponent {
           keyboardType={this.props.keyboardType || 'default'}
           autoCapitalize={this.props.autoCapitalize}
           onFocus={this.onFocus}
+          onBlur={this.onBlur}
           underlineColorAndroid="transparent"
         />
         <TouchableWithoutFeedback onPress={this.onFocus}>
@@ -349,7 +362,8 @@ class Search extends PureComponent {
                     tintColor: this.props.tintColorDelete
                   },
                   this.props.positionRightDelete && {
-                    [isRtl ? 'left' : 'right']: this.props.positionRightDelete
+                    [isRtl ? 'left' : 'right']: this.props.positionRightDelete,
+                    [isRtl ? 'right' : 'left']: undefined,
                   },
                   { opacity: this.iconDeleteAnimated }
                 ]}
@@ -502,7 +516,7 @@ Search.propTypes = {
     ViewPropTypes.style,
     Text.propTypes.style
   ]),
-  direction: PropTypes.oneOf(['ltr', 'rtl']),
+  direction: PropTypes.string,
   cancelButtonStyle: PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.object,
@@ -541,6 +555,7 @@ Search.propTypes = {
   searchIconExpandedMargin: PropTypes.number,
   placeholderCollapsedMargin: PropTypes.number,
   placeholderExpandedMargin: PropTypes.number,
+  collapseOnBlur: PropTypes.bool,
 
   /**
    * Shadow
@@ -556,6 +571,7 @@ Search.propTypes = {
 };
 
 Search.defaultProps = {
+  collapseOnBlur: true,
   editable: true,
   blurOnSubmit: true,
   keyboardShouldPersist: false,
