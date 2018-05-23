@@ -179,7 +179,7 @@ class Search extends PureComponent {
   };
 
   onBlur = async () => {
-    this.props.beforeCancel && (await this.props.beforeBlur());
+    this.props.beforeBlur && (await this.props.beforeBlur());
     if (this.props.collapseOnBlur) {
       await this.setState(prevState => {
         return { expanded: !prevState.expanded };
