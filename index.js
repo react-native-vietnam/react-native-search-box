@@ -33,12 +33,16 @@ class Search extends PureComponent {
      * Animated values
      */
     this.iconSearchAnimated = new Animated.Value(
-      this.middleWidth - this.props.searchIconCollapsedMargin
+      this.props.shouldCenterAllExpanded
+        ? this.middleWidth - this.props.searchIconCollapsedMargin
+        : this.props.searchIconCollapsedMargin
     );
     this.iconDeleteAnimated = new Animated.Value(0);
     this.inputFocusWidthAnimated = new Animated.Value(this.contentWidth - 10);
     this.inputFocusPlaceholderAnimated = new Animated.Value(
-      this.middleWidth - this.props.placeholderCollapsedMargin
+      this.props.shouldCenterAllExpanded
+        ? this.middleWidth - this.props.placeholderCollapsedMargin
+        : this.props.placeholderCollapsedMargin
     );
     this.btnCancelAnimated = new Animated.Value(this.contentWidth);
 
@@ -225,13 +229,17 @@ class Search extends PureComponent {
         }).start(),
         this.props.keyboardShouldPersist === false
           ? Animated.timing(this.inputFocusPlaceholderAnimated, {
-              toValue: this.middleWidth - this.props.placeholderCollapsedMargin,
+              toValue: this.props.shouldCenterAllExpanded
+                ? this.middleWidth - this.props.placeholderCollapsedMargin
+                : this.props.placeholderCollapsedMargin,
               duration: 200
             }).start()
           : null,
         this.props.keyboardShouldPersist === false || isForceAnim === true
           ? Animated.timing(this.iconSearchAnimated, {
-              toValue: this.middleWidth - this.props.searchIconCollapsedMargin,
+              toValue: this.props.shouldCenterAllExpanded
+                ? this.middleWidth - this.props.searchIconCollapsedMargin
+                : this.props.searchIconCollapsedMargin,
               duration: 200
             }).start()
           : null,
@@ -536,6 +544,7 @@ Search.propTypes = {
   /**
    * Positioning
    */
+  shouldCenterAllExpanded: PropTypes.bool,
   positionRightDelete: PropTypes.number,
   searchIconCollapsedMargin: PropTypes.number,
   searchIconExpandedMargin: PropTypes.number,
@@ -559,6 +568,7 @@ Search.defaultProps = {
   editable: true,
   blurOnSubmit: true,
   keyboardShouldPersist: false,
+  shouldCenterAllExpanded: true,
   searchIconCollapsedMargin: 25,
   searchIconExpandedMargin: 10,
   placeholderCollapsedMargin: 15,
