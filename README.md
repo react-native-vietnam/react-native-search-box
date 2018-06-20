@@ -192,6 +192,7 @@ class MyScene extends PureComponent {
     /**
      * text input
      */
+    defaultValue: PropTypes.string,
     placeholder: PropTypes.string,
     cancelTitle: PropTypes.oneOfType([
         PropTypes.string,
