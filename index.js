@@ -305,6 +305,7 @@ class Search extends PureComponent {
           autoCapitalize={this.props.autoCapitalize}
           onFocus={this.onFocus}
           underlineColorAndroid="transparent"
+          accessibilityTraits="search"
         />
         <TouchableWithoutFeedback onPress={this.onFocus}>
         {this.props.iconSearch
