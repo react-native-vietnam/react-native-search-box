@@ -169,7 +169,7 @@ class Search extends PureComponent {
    */
   onCancel = async () => {
     this.props.beforeCancel && (await this.props.beforeCancel());
-    await this.setState({ keyword: '' });
+    //await this.setState({ keyword: '' });
     await this.setState(prevState => {
       return { expanded: !prevState.expanded };
     });
