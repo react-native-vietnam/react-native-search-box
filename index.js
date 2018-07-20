@@ -386,8 +386,12 @@ class Search extends PureComponent {
 
 const getStyles = (inputHeight, isRtl) => {
   let middleHeight = 20
-  if (typeof inputHeight == 'number')
-  middleHeight = (10 + inputHeight) / 2;
+  if (typeof inputHeight == 'number') {
+    middleHeight = (10 + inputHeight) / 2;
+  } else{
+    // Default value for when prop value is not present
+    inputHeight = 30
+  }
 
   return {
     container: {
