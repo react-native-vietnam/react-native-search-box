@@ -14,7 +14,6 @@ import {
 } from 'react-native';
 
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
-const containerHeight = 40;
 
 class Search extends PureComponent {
   constructor(props) {
@@ -393,14 +392,14 @@ const getStyles = (inputHeight, isRtl) => {
   return {
     container: {
       backgroundColor: 'grey',
-      height: containerHeight,
+      height: inputHeight + 10,
       flexDirection: isRtl ? 'row-reverse' : 'row',
       justifyContent: 'flex-start',
       alignItems: 'center',
       padding: 5
     },
     input: {
-      height: containerHeight - 10,
+      height: inputHeight,
       paddingTop: 5,
       paddingBottom: 5,
       [isRtl ? 'paddingRight' : 'paddingLeft']: 20,
