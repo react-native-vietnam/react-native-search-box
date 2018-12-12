@@ -75,6 +75,15 @@ class MyScene extends PureComponent {
     }
 
     // Important: You must return a Promise
+    onSearch = (searchText) => {
+        return new Promise((resolve, reject) => {
+            console.log(searchText);
+            console.log('Add your search function here.');
+            resolve();
+        });
+    }
+    
+    // Important: You must return a Promise
     beforeFocus = () => {
         return new Promise((resolve, reject) => {
             console.log('beforeFocus');
@@ -104,6 +113,7 @@ class MyScene extends PureComponent {
       <View style={{ flex: 1}}>
         <Search
           ref="search_box"
+          onSearch={this.onSearch}
           /**
           * There many props that can customizable
           * Please scroll down to Props section
