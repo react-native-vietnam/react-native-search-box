@@ -302,6 +302,7 @@ class Search extends PureComponent {
           blurOnSubmit={this.props.blurOnSubmit}
           returnKeyType={this.props.returnKeyType || 'search'}
           keyboardType={this.props.keyboardType || 'default'}
+          keyboardAppearance={this.props.keyboardAppearance || 'default'}
           autoCapitalize={this.props.autoCapitalize}
           onFocus={this.onFocus}
           underlineColorAndroid="transparent"
@@ -525,6 +526,7 @@ Search.propTypes = {
   iconSearch: PropTypes.object,
   returnKeyType: PropTypes.string,
   keyboardType: PropTypes.string,
+  keyboardAppearance: PropTypes.string,
   autoCapitalize: PropTypes.string,
   inputHeight: PropTypes.number,
   inputBorderRadius: PropTypes.number,
