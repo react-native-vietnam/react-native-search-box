@@ -223,6 +223,7 @@ class MyScene extends PureComponent {
     /**
      * Positioning
      */
+    shouldCenterAllExpanded: PropTypes.bool,
     positionRightDelete: PropTypes.number,
     searchIconCollapsedMargin: PropTypes.number,
     searchIconExpandedMargin: PropTypes.number,
@@ -232,6 +233,7 @@ class MyScene extends PureComponent {
 
 ## Prop Defaults
 ```
+    shouldCenterAllExpanded: true,
     searchIconCollapsedMargin: 25,
     searchIconExpandedMargin: 10,
     placeholderCollapsedMargin: 15,
