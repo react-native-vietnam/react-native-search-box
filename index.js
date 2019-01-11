@@ -79,6 +79,13 @@ class Search extends PureComponent {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    if(!this.props.autoFocus && nextProps.autoFocus) {
+      this.setState({expanded: true})
+      this.refs.input_keyword._component.focus();
+    }
+  }
+
   onLayout = event => {
     const contentWidth = event.nativeEvent.layout.width;
     this.contentWidth = contentWidth;
