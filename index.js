@@ -74,9 +74,18 @@ class Search extends PureComponent {
   componentDidMount() {
     if(this.autoFocus) {
       this.setState({expanded: true})
-      this.refs.input_keyword._component.focus();
+      this.getInputRef().focus();
 
     }
+  }
+
+  // Required to support both react-native =>0.62 and <0.62
+  getInputRef() {
+    const { input_keyword } = this.refs
+
+    return !!input_keyword._component
+      ? _component // <0.62
+      : input_keyword // =>0.62
   }
 
   onLayout = event => {
@@ -127,8 +136,8 @@ class Search extends PureComponent {
    */
   onFocus = async () => {
     this.props.beforeFocus && (await this.props.beforeFocus());
-    this.refs.input_keyword._component.isFocused &&
-      (await this.refs.input_keyword._component.focus());
+    this.getInputRef().isFocused &&
+      (await this.getInputRef().focus());
     await this.setState(prevState => {
       return { expanded: !prevState.expanded };
     });
@@ -143,7 +152,7 @@ class Search extends PureComponent {
    */
   focus = async (text = '') => {
     await this.setState({ keyword: text });
-    await this.refs.input_keyword._component.focus();
+    await this.getInputRef().focus();
   };
 
   /**
