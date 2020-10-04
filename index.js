@@ -562,6 +562,7 @@ Search.propTypes = {
   blurOnSubmit: PropTypes.bool,
   keyboardShouldPersist: PropTypes.bool,
   useClearButton: PropTypes.bool,
+  autoFocus: PropTypes.bool,
 
   /**
    * Positioning

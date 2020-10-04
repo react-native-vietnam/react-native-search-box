@@ -219,6 +219,7 @@ class MyScene extends PureComponent {
     middleWidth: PropTypes.number,
     blurOnSubmit: PropTypes.bool,
     keyboardDismissOnSubmit: PropTypes.bool,
+    autoFocus: PropTypes.bool,
 
     /**
      * Positioning
