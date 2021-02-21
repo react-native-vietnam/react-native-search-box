@@ -212,13 +212,16 @@ class MyScene extends PureComponent {
     iconSearch: PropTypes.object,
     returnKeyType: PropTypes.string,
     keyboardType: PropTypes.string,
+    keyboardAppearance: PropTypes.string,
     autoCapitalize: PropTypes.string,
     inputHeight: PropTypes.number,
     inputBorderRadius: PropTypes.number,
     contentWidth: PropTypes.number,
     middleWidth: PropTypes.number,
+    editable: PropTypes.bool,
     blurOnSubmit: PropTypes.bool,
-    keyboardDismissOnSubmit: PropTypes.bool,
+    keyboardShouldPersist: PropTypes.bool,
+    useClearButton: PropTypes.bool,
 
     /**
      * Positioning
