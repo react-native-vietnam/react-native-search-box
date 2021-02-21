@@ -329,6 +329,7 @@ class Search extends PureComponent {
           onFocus={this.onFocus}
           underlineColorAndroid="transparent"
           accessibilityTraits="search"
+          maxFontSizeMultiplier={this.props.maxFontSizeMultiplierForInput}
         />
         <TouchableWithoutFeedback onPress={this.onFocus}>
         {this.props.iconSearch
@@ -390,6 +391,7 @@ class Search extends PureComponent {
             ]}
           >
             <Text
+              maxFontSizeMultiplier={this.props.maxFontSizeMultiplierForCancel}
               style={[
                 styles.cancelButtonText,
                 this.props.titleCancelColor && {
@@ -562,6 +564,8 @@ Search.propTypes = {
   blurOnSubmit: PropTypes.bool,
   keyboardShouldPersist: PropTypes.bool,
   useClearButton: PropTypes.bool,
+  maxFontSizeMultiplierForInput: PropTypes.number,
+  maxFontSizeMultiplierForCancel: PropTypes.number,
 
   /**
    * Positioning
@@ -604,6 +608,8 @@ Search.defaultProps = {
   shadowVisible: false,
   useClearButton: true,
   direction: 'ltr',
+  maxFontSizeMultiplierForInput: undefined,
+  maxFontSizeMultiplierForCancel: undefined,
 };
 
 export default Search;
