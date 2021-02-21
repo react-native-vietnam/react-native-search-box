@@ -10,10 +10,24 @@ import {
   Keyboard,
   Image,
   View,
-  ViewPropTypes
+  ViewPropTypes,
+  StyleSheet
 } from 'react-native';
 
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
+
+const optimizedStyles = StyleSheet.create({
+  iconSearchDefault: {
+    tintColor: 'grey'
+  },
+  iconDeleteDefault: {
+    tintColor: 'grey'
+  },
+  cancelButtonText: {
+    fontSize: 14,
+    color: '#fff'
+  }
+})
 
 class Search extends PureComponent {
   constructor(props) {
@@ -417,6 +431,12 @@ const getStyles = (inputHeight, isRtl) => {
     inputHeight = 30
   }
 
+  const {
+    iconSearchDefault,
+    iconDeleteDefault,
+    cancelButtonText
+  } = optimizedStyles;
+
   return {
     container: {
       backgroundColor: 'grey',
@@ -445,9 +465,7 @@ const getStyles = (inputHeight, isRtl) => {
       height: 14,
       width: 14
     },
-    iconSearchDefault: {
-      tintColor: 'grey'
-    },
+    iconSearchDefault,
     iconDelete: {
       position: 'absolute',
       [isRtl ? 'left' : 'right']: 70,
@@ -455,9 +473,7 @@ const getStyles = (inputHeight, isRtl) => {
       height: 14,
       width: 14
     },
-    iconDeleteDefault: {
-      tintColor: 'grey'
-    },
+    iconDeleteDefault,
     cancelButton: {
       justifyContent: 'center',
       alignItems: isRtl ? 'flex-end' : 'flex-start',
@@ -465,10 +481,7 @@ const getStyles = (inputHeight, isRtl) => {
       width: 60,
       height: 50
     },
-    cancelButtonText: {
-      fontSize: 14,
-      color: '#fff'
-    }
+    cancelButtonText
   };
 }
 
