@@ -220,6 +220,9 @@ class MyScene extends PureComponent {
     middleWidth: PropTypes.number,
     editable: PropTypes.bool,
     blurOnSubmit: PropTypes.bool,
+    keyboardDismissOnSubmit: PropTypes.bool,
+    maxFontSizeMultiplierForInput: PropTypes.number,
+    maxFontSizeMultiplierForCancel: PropTypes.number,
     keyboardShouldPersist: PropTypes.bool,
     useClearButton: PropTypes.bool,
 
