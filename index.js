@@ -203,10 +203,12 @@ class Search extends PureComponent {
   };
 
   expandAnimation = () => {
+    const widthOffset = this.props.showCancelButton ? this.cancelButtonWidth : 10;
+    
     return new Promise((resolve, reject) => {
       Animated.parallel([
         Animated.timing(this.inputFocusWidthAnimated, {
-          toValue: this.contentWidth - this.cancelButtonWidth,
+          toValue: this.contentWidth - widthOffset,
           duration: 200,
           useNativeDriver: false
         }).start(),
@@ -288,6 +290,8 @@ class Search extends PureComponent {
   render() {
     const isRtl = this.props.direction === 'rtl';
     const styles = getStyles(this.props.inputHeight, isRtl);
+    const deleteIconPosition = this.props.showCancelButton ? 70 : 30;
+    
     return (
       <Animated.View
         ref="searchContainer"
@@ -389,34 +393,38 @@ class Search extends PureComponent {
                   this.props.positionRightDelete && {
                     [isRtl ? 'left' : 'right']: this.props.positionRightDelete
                   },
-                  { opacity: this.iconDeleteAnimated }
+                  { opacity: this.iconDeleteAnimated },
+                  { [isRtl ? 'left' : 'right']: deleteIconPosition},
                 ]}
               />}
         </TouchableWithoutFeedback>}
 
-        <TouchableOpacity onPress={this.onCancel}>
-          <Animated.View
-            style={[
-              styles.cancelButton,
-              this.props.cancelButtonStyle && this.props.cancelButtonStyle,
-              this.props.cancelButtonViewStyle && this.props.cancelButtonViewStyle,
-              { [isRtl ? 'right' : 'left']: this.btnCancelAnimated },
-            ]}
-          >
-            <Text
+        {
+          this.props.showCancelButton && 
+          <TouchableOpacity onPress={this.onCancel}>
+            <Animated.View
               style={[
-                styles.cancelButtonText,
-                this.props.titleCancelColor && {
-                  color: this.props.titleCancelColor
-                },
+                styles.cancelButton,
                 this.props.cancelButtonStyle && this.props.cancelButtonStyle,
-                this.props.cancelButtonTextStyle && this.props.cancelButtonTextStyle,
+                this.props.cancelButtonViewStyle && this.props.cancelButtonViewStyle,
+                { [isRtl ? 'right' : 'left']: this.btnCancelAnimated },
               ]}
             >
-              {this.cancelTitle}
-            </Text>
-          </Animated.View>
-        </TouchableOpacity>
+              <Text
+                style={[
+                  styles.cancelButtonText,
+                  this.props.titleCancelColor && {
+                    color: this.props.titleCancelColor
+                  },
+                  this.props.cancelButtonStyle && this.props.cancelButtonStyle,
+                  this.props.cancelButtonTextStyle && this.props.cancelButtonTextStyle,
+                ]}
+              >
+                {this.cancelTitle}
+              </Text>
+            </Animated.View>
+          </TouchableOpacity>
+        }
       </Animated.View>
     );
   }
@@ -556,6 +564,11 @@ Search.propTypes = {
   cancelButtonViewStyle: PropTypes.oneOfType([PropTypes.object, ViewPropTypes.style]),
 
   /**
+   * Cancel button visiblity
+   */
+   showCancelButton: PropTypes.bool,
+
+  /**
    * text input
    */
   defaultValue: PropTypes.string,
@@ -617,6 +630,7 @@ Search.defaultProps = {
   shadowVisible: false,
   useClearButton: true,
   direction: 'ltr',
+  showCancelButton: true,
 };
 
 export default Search;
