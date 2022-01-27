@@ -198,6 +198,11 @@ class MyScene extends PureComponent {
         PropTypes.number,
         PropTypes.object
     ]),
+    
+    /**
+    * Cancel button visiblity
+    */
+    showCancelButton: PropTypes.bool,
 
     /**
      * text input
@@ -239,7 +244,8 @@ class MyScene extends PureComponent {
     searchIconExpandedMargin: 10,
     placeholderCollapsedMargin: 15,
     placeholderExpandedMargin: 20,
-    shadowVisible: false
+    shadowVisible: false,
+    showCancelButton: true,
 ```
 
 ## LICENSE
